@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head lang="zh-CN">
+        <meta charset="utf-8" />
+        <title>settings</title>
+        <link rel="stylesheet" href="/static/writer/style.css" />
+        <link rel="shortcut icon" href="/static/shared/favicon.ico" />
+    </head>
+    <body>
+        <div id="container">
+             <div id="header">
+                <a href="/writer">origin</a>
+                <a href="/writer/settings">site setting</a>
+                <a href="/">visit site</a>
+             </div>
+             <div class="sep40"></div>
+             <div id="main">
+                 <div id="content">
+                     <form id="writer" action="/writer/settings" method="post" name="setting">
+                         <div class="inner">
+                            Site name
+                            <br />
+                            <input type="text" class="input_500" name="site_name" value="{% if site_info.site_name %}{{ site_info.site_name }}{% endif %}"/>
+                            <br />
+                            <br />
+                            Site Slogan
+                            <br />
+                            <input name="site_slogan" type="text" class="input_500" value="{% if site_info.site_slogan %}{{ site_info.site_slogan }}{% endif %}" />
+                            <br />
+                            <br />
+                            Author
+                            <br />
+                            <input name="author" type="text" class="input_500" value="{% if site_info.author %}{{ site_info.author }}{% endif %}" />
+                            <br />
+                            <br />
+                            Google analytics id
+                            <br />
+                            <input name="google_analytic_id" type="text" class="input_500" value="{% if site_info.google_analytic_id %}{{ site_info.google_analytic_id }}{% endif %}"/>
+                            <br />
+                            <br />
+                            <a href="javascript:document.setting.submit()">Save</a>
+                         </div>
+                     </form> 
+                 </div>
+                 <div id="description">
+                 </div>
+             </div>
+             <div class="sep50"></div>
+        </div>
+        <div id="footer">
+            <div id="info">
+                <strong>Look at the star, look how they shine for you.</strong>
+                <div class="sep4"></div>
+                &copy; 2011 hbc
+            </div>
+            <div class="sep4"></div>
+            <div id="powered">
+                Powered by
+                <a href="http://www.dotcloud.com" target="_blank">dotcloud</a>
+                +
+                <a href="http://jinja2.pocoo.org" target="_blank">jinja2</a>
+                +
+                <a href="http://www.webpy.org" target="_blank">webpy</a>
+           </div>
+        </div>
+    </body>
+</html>

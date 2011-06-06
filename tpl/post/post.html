@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head lang="zh-CN">
+        <meta charset="utf-8" />
+        <link rel="stylesheet" media="screen" href="/static/themes/default/style.css" />
+        <link rel="shortcut icon" href="/static/shared/favicon.ico" />
+        <title>{{ post.title }}</title>
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h2 id="name">
+                    <a href="/">{{ site_info.site_name }}</a>
+                </h2>
+                <div id="nav">
+                    {% for page in pages %}
+                    <span class="sep">-</span>
+                    <a href="/{{ page.url }}">{{ page.title }}</a>
+                    {% endfor %}
+                </div>
+                <p id="slogan">
+                {{ site_info.site_slogan }}
+                </p>
+            </div>
+            <div id="wrapper">
+                <div class="sep_40"></div>
+                <div id="content">
+                    <h2 class="title">{{ post.title }}</h2>
+                    <h3 class="time">{{ post.created_time }}</h3>
+                    <div class="sep_20"></div>
+                    {{ post.formatted_content }}
+                </div>
+                <div class="hr_eof">- EOF -</div>
+                <div class="sep_40"></div>
+            </div>
+            <div id="footer">
+                Look at the star, look how they shine for you.
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head lang="zh-CN">
+        <meta charset="utf-8" />
+        <title>origin</title>
+        <link rel="stylesheet" href="/static/writer/style.css" />
+        <link rel="shortcut icon" href="/static/shared/favicon.ico" />
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <a href="/writer">origin</a>
+                <a href="/writer/settings">site setting</a>
+                <a href="/">visit site</a>
+            </div>
+            <div class="sep40"></div>
+            <div id="main">
+                <div id="content">
+                    <div id="controller">
+                        <a href="/writer/new">new post</a>
+                    </div>
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%" id="posts">
+                        <tr>
+                    	    <th width="2"></th>
+                    	    <th width="auto">Title</th>
+                    	    <th width="150">Created</th>
+                        	<th width="150">Last Modified</th>
+                    	    <th width="50">View</th>
+                        </tr>
+                        {% if posts %}
+                        {% for post in posts %}
+                        <tr>
+                            <td class="{{ loop.cycle('odd', 'even') }}"></td>
+                            <td class="{{ loop.cycle('odd', 'even') }}">
+                                <a href="/writer/edit/{{ post.id }}" class="title">{{ post.title }}</a>
+                                <a href="/{{ post.url }}" class="visit">»</a>
+                                {% if post.is_page == 1 %}
+                                <div class="gray_badge">PAGE</div>
+                                {% endif %}
+                                {% if post.is_isolated == 1 %}
+                                <div class="blue_badge">ISOLATED</div>
+                                {% endif %}
+                                <br />
+                                <small>{{ post.category }}</small>
+                                <a href="#" onclick="if (confirm('Are you sure?')) { location.href = '/writer/remove/{{ post.id }}';}" class="delete">remove</a>
+                            </td>
+                            <td class="{{ loop.cycle('odd', 'even') }}">{{ post.created_time }}</td>
+                            <td class="{{ loop.cycle('odd', 'even') }}">{{ post.modified_time }}</td>
+                            <td class="{{ loop.cycle('odd', 'even') }}">{{ post.view_time }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                </div>
+                <div id="description">
+                </div>
+            </div>
+            <div class="sep50"></div>
+        </div>
+        <div id="footer">
+            <div id="info">
+                <strong>Look at the star, look how they shine for you.</strong>
+                <div class="sep4"></div>
+                &copy; 2011 hbc
+            </div>
+            <div class="sep4"></div>
+            <div id="powered">
+                Powered by
+                <a href="http://www.dotcloud.com" target="_blank">dotcloud</a>
+                +
+                <a href="http://jinja2.pocoo.org" target="_blank">jinja2</a>
+                +
+                <a href="http://www.webpy.org" target="_blank">webpy</a>
+           </div>
+        </div>
+    </body>
+</html>
