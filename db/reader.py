@@ -60,3 +60,7 @@ def get_all():
 def get_last_modified():
     session = connect_db()
     return session.query(post).order_by(desc(post.modified_time)).all()
+
+def get_latest():
+    session = connect_db()
+    return session.query(post).order_by(desc(post.created_time)).all()

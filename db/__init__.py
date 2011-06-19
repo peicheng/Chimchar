@@ -48,6 +48,21 @@ class post(Base):
     is_isolated = Column(Integer)
     is_page = Column(Integer)
 
+    def db2dict(self):
+        values = {
+                'id': self.id,
+                'title': self.title,
+                'url': self.url,
+                'link': self.link,
+                'content': self.content,
+                'formatted_content': self.formatted_content,
+                'created_time': self.created_time,
+                'modified_time': self.modified_time,
+                'is_isolated': self.is_isolated,
+                'is_page': self.is_page,
+                }
+        return values
+
 class site_setting(Base):
     __tablename__ = 'site_setting'
     id = Column(Integer, primary_key=True)

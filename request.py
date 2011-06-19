@@ -2,6 +2,7 @@
 
 import web
 from jinja2 import Environment, FileSystemLoader
+import json
 import os
 import time
 
@@ -67,6 +68,30 @@ class sitemap_handler(before_request):
         path = os.path.join(os.path.dirname(__file__), 'tpl', 'shared')
         return render_template('sitemap.xml', path, template_values)
 
+class latest_json_handler(before_request):
+    def GET(self):
+        posts = [i.db2dict() for i in reader.get_latest()]
+        pages = [i.db2dict() for i in reader.get_all_pages()]
+        template_values = {
+                'posts': posts,
+                'pages': pages,
+                }
+        web.header('Content-Type', 'text/javascript; charset=UTF-8')
+        return json.dumps(template_values)
+
+class post_json_handler(before_request):
+    def GET(self, url):
+        pages = [i.db2dict() for i in reader.get_all_pages()]
+        post = reader.get_post_by_url(url)
+        if post:
+            template_values = {
+                    'post': post.db2dict(),
+                    'pages': pages,
+                    }
+            web.header('Content-Type', 'text/javascript; charset=UTF-8')
+            return json.dumps(template_values)
+        else:
+            raise web.notfound()
 
 class post_handler(before_request):
     def GET(self, url):
@@ -98,10 +123,13 @@ urls = (
         '/feed.xml', 'feed_handler',
         '/robots.txt', 'robots_handler',
         '/sitemap.xml', 'sitemap_handler',
+        '/latest.json', 'latest_json_handler',
+        '/([0-9a-zA-Z\-\.]+).json', 'post_json_handler',
         '/([0-9a-zA-Z\-\.]+)', 'post_handler',
         )
 
 app = web.application(urls, locals())
+web.config.debug = True
 
 if __name__ == '__main__':
     app.run()
