@@ -5,7 +5,9 @@ v0.6
 ### secret
 
 ` >>> import hashlib
+
 ` >>> hashlib.sha1('yoursecrethere').hexdigest()
+
 ` '3ac4fe0b78d1556970ba0344f51ace44c83f172c'
 
 ### contact
