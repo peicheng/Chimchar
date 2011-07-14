@@ -1,0 +1,29 @@
+{% include 'header.html' %}
+<title>{{ post.title }}</title>
+</head>
+<body>
+<div class="wrapper">
+	<div class="sep120"></div>
+    <ul class="nav">
+        <li>
+        	<a href="/blog">blog</a>
+        </li>
+        {% for page in pages %}
+        <li>
+            <a href="/{{ page.url }}">{{ page.title }}</a>
+        </li>
+        {% endfor %}
+        <li>
+        	<a href="/feed.xml">feed</a>
+        </li>
+    </ul>
+    <div class="content">
+        <h2 class="title">{{ post.title }}</h2>
+        {{ post.formatted_content }}
+    </div>
+    <div class="footer">
+        {{ site_info.slogan }}
+    </div>
+</div>
+</body>
+{% include 'footer.html' %}
