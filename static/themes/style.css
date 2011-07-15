@@ -66,20 +66,33 @@ div.wrapper {
     width: 960px;
 }
 
-ul.nav {
+.nav > ul{
     position: fixed;
     padding: 10px 0 5px;
     margin: 0 0 20px;
     float: left;
     width: 200px;
+    min-height: 200px;
     list-style-type: none;
     line-height: 1.2em;
 }
 
-ul.nav > li {
+.nav > ul > li {
     padding: 5px;
     font-size: 1.2em;
     line-height: .85em;
+}
+
+.nav > h3.section_header {
+    position: fixed;
+    display: block;
+    padding: 0 0 5px;
+    margin: 200px 0 20px;
+    width: 150px;
+    line-height: 1.2em;
+    font-weight: 400;
+    font-size: 0.95em;
+    color: #666;
 }
 
 div.content {

@@ -3,20 +3,22 @@
 </head>
 <body>
 <div class="wrapper">
-	<div class="sep120"></div>
-    <ul class="nav">
-        <li>
-        	<a href="/blog">blog</a>
-        </li>
-        {% for page in pages %}
-        <li>
-            <a href="/{{ page.url }}">{{ page.title }}</a>
-        </li>
-        {% endfor %}
-        <li>
-        	<a href="/feed.xml">feed</a>
-        </li>
-    </ul>
+    <div class="sep120"></div>
+    <div class="nav">
+        <ul>
+            <li>
+        	    <a href="/blog">blog</a>
+            </li>
+            {% for page in pages %}
+            <li>
+                <a href="/{{ page.url }}">{{ page.title }}</a>
+            </li>
+            {% endfor %}
+            <li>
+        	    <a href="/feed.xml">feed</a>
+            </li>
+        </ul>
+    </div>
     {% for post in posts %}
     <div class="content">
         {% if post.link %}
