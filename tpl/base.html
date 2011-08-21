@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8" />
+        {% block head %}
+        <link rel="stylesheet" href="default.css" />
+        {% endblock %}
+        <title>{% block title %}Chimchar{% endblock %}</title>
+    </head>
+    <body>
+        <div class="wrapper">
+        <div class="sep120"></div>
+        <div class="nav">
+        {% block nav %}
+        	<ul>
+        		<li>
+        			<a href="/">blog</a>
+        		</li>
+        		<li>
+        			<a href="/feed.xml">feed</a>
+        		</li>
+            </ul>
+        {% endblock %}
+            <h3 class="section_header"></h3>
+        </div>
+        <div class="content">
+        {% block content %}
+        	<h2 class="title">Hello Chimchar</h2>
+        {% endblock %}
+        </div>
+        <div class="footer">
+        {% block footer %}
+            Look at the star, look how they shine for you.
+        {% endblock %}
+        </div>
+    </div>
+    </body>
+</html>
