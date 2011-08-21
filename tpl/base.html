@@ -23,11 +23,13 @@
         {% endblock %}
             <h3 class="section_header"></h3>
         </div>
+        {% block contents %}
         <div class="content">
         {% block content %}
         	<h2 class="title">Hello Chimchar</h2>
         {% endblock %}
         </div>
+        {% endblock %}
         <div class="footer">
         {% block footer %}
             Look at the star, look how they shine for you.

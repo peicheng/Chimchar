@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block nav %}
+<ul>
+	<li>
+		<a href="/">blog</a>
+    </li>
+    {% if nav %}
+    {% for page in nav %}
+    <li>
+        <a href="/{{ page.url }}">{{ page.title }}</a>
+    </li>
+    {% endfor %}
+    {% endif %}
+	<li>
+		<a href="/feed.xml">feed</a>
+	</li>
+</ul>
+{% endblock %}
+
+{% block contents %}
+    {% if posts %}
+        {% for post in posts %}
+    <div class="content">
+            {% if post.link %}
+        <h2 class="title">
+                <a href="{{ post.link }}">{{ post.title }}</a>
+        </h2>
+            {% else %}
+        <h2 class="title">{{ post.title }}</h2>
+            {% endif %}
+            {{ post.content }}
+    </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+{{ site.site_slogan }}
+{% endblock %}
