@@ -22,6 +22,13 @@ def get_posts(path = unit_paths['posts'], ftype = file_type):
             l.append(post(os.path.join(unit_paths['posts'], f)).pack)
     return l
 
+def get_nav(plist):
+    s = []
+    for i in plist:
+        if i['is_page'] == 1:
+            s.append(i)
+    return s
+
 def file_writer(fn, path, content):
     f = open(os.path.join(path, fn), 'w')
     f.write(content.encode('utf-8'))
