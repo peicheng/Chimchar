@@ -1,0 +1,39 @@
+footer: ~ 
+# Just leave it blank.
+
+globals:
+    file_type: 'mkd'
+
+header:
+    theme: default
+    title: Chimchar Demo
+
+nav:
+# You can pre-define some fixed-link in nav here.
+    blog: ''
+    feed: 'feed.xml'
+
+post:
+# A default post.
+    title: ~
+    url: ~
+    link: ~
+    time: ~
+    is_isolated: 0
+    is_page: 0
+
+site:
+# Your site profile can change here.
+    site_name: Chimchar Demo
+    site_slogan: hello Chimchar
+    author: Chimchar
+    google_analytic_id: ~
+
+unit:
+# Chimchar's stuff
+    - chimchar
+    - posts
+    - site
+    - tpl
+---
+I'm a config file. =)

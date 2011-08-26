@@ -1,33 +1,18 @@
 #coding: utf-8
 
-import yaml
-import markdown
 import codecs
 from jinja2 import Environment, FileSystemLoader
+import markdown
+import os
+import yaml
 
-from config import *
+base_loader = yaml.load
+base_render = markdown.markdown
 
-# collect things
-# collect one time just enough.
-def get_settings(slist = setting_paths):
-    s = {}
-    for key,values in slist.items():
-        s[key] = setting(values).options
-    return s
+app_path = os.path.dirname(os.path.abspath(''))
+settings_file = os.path.join(app_path, 'settings.yaml')
 
-def get_posts(path = unit_paths['posts'], ftype = file_type):
-    l = []
-    for f in os.listdir(path):
-        if f[len(f)-len(ftype):len(f)] == ftype:
-            l.append(post(os.path.join(unit_paths['posts'], f)).pack)
-    return l
-
-def get_nav(plist):
-    s = []
-    for i in plist:
-        if i['is_page'] == 1:
-            s.append(i)
-    return s
+terminal_char = '---\n'
 
 def file_writer(fn, path, content):
     f = open(os.path.join(path, fn), 'w')
@@ -47,19 +32,14 @@ def jinja2_render(template_name, path, content):
     jinja_env.globals.update(globals)
     return jinja_env.get_template(template_name).render(content)
 
-# worker
-# TODO feed render
-
-class worker(object):
+class loader(object):
+    # Load every thing
     def __init__(self):
         return
 
-    def load(self, fn = ''):
-        if fn:
-            lines = codecs.open(fn, encoding='utf-8').readlines()
-            return lines
-        else:
-            return False
+    def load(self, fn):
+        lines = codecs.open(fn, encoding = 'utf-8').readlines()
+        return lines
 
     def parse(self, l, sp, ep, render):
         p = ''
@@ -67,52 +47,40 @@ class worker(object):
             p += l[i]
         return render(p)
 
-class post(worker):
-    def __init__(self, fn, default_options = ''):
-        worker.__init__(self)
-
-        if not default_options:
-            self.get_default_options()
-
+class post(loader):
+    # Load a post
+    def __init__(self, fn, settings, default_settings):
+        loader.__init__(self)
         self.fn = fn
-        self.lines = self.load(fn)
+        self.settings = settings
+        self.default = default_settings
+        self.lines = self.load(self.fn)
         self.parse(self.lines)
-
-    def get_default_options(self):
-        parser = worker().parse
-        l = worker().load(setting_paths['post'])
-        ep = l.index(terminal_char)
-        self.default_options = worker.parse(self, l, 0, ep, yaml.load)
-        return self.default_options
 
     def parse(self, l):
         try:
+            default = self.default
             til = l.index(terminal_char)
-            
-            # post options
-            self.options = worker.parse(self, l, 0, til, yaml.load)
-            for key, items in self.default_options.items():
-                #fill in the default_options if it is blank
+            self.options = loader.parse(self, l, 0, til, base_loader)
+            self.content = loader.parse(self, l, til+1, len(l), base_render)
+            for key, values in default.items():
                 if not self.options.has_key(key):
-                    self.options[key] = items
-            self.options['time'] = '' #TODO modified time & created time
-
-            # post content
-            self.content = worker.parse(self, l, til+1, len(l), markdown.markdown)
+                    self.options[key] = values
+            self.options['time'] = '' #TODO mt & ct
         except ValueError:
-            #TODO handle the leak of terminal_char
+            #TODO handler the leak of terminal_char
             return ''
 
-        # combine the options and the content
+        #all in pack
         self.pack = {'content': self.content}
         for key in self.options.keys():
             self.pack[key] = self.options[key]
-
         return self.pack
 
-class setting(worker):
+class setting(loader):
+    # Load settings
     def __init__(self, fn):
-        worker.__init__(self)
+        loader.__init__(self)
         self.fn = fn
         self.lines = self.load(fn)
         self.parse(self.lines)
@@ -120,46 +88,74 @@ class setting(worker):
     def parse(self, l):
         try:
             til = l.index(terminal_char)
-            self.options = worker.parse(self, l, 0, til, yaml.load)
+            self.options = loader.parse(self, l, 0, til, base_loader)
         except ValueError:
             self.options = ''
-
         return self.options
 
-class posts(object):
-    def __init__(self, template_values):
-        self.template_values = template_values
-
+class worker(object):
+    def __init__(self, fn = settings_file):
+        self.fn = fn
+        self.settings = self.get_settings()
+        self.paths = self.get_paths()
+        self.posts = self.get_posts()
+        self.nav = self.get_nav()
         return
 
-    def rende(self, flist, output = unit_paths['site'], render = jinja2_render, writer = file_writer):
-        for i in flist:
-            template_values = self.template_values
-            template_values['post'] = i
+    def get_settings(self):
+        return setting(self.fn).options
 
+    def get_paths(self):
+        paths = {}
+        stuff = self.settings['unit']
+
+        for i in stuff:
+            paths[i] = os.path.join(app_path, i)
+        return paths
+
+    def get_posts(self):
+        l = []
+        path = self.paths['posts']
+        ftype = self.settings['globals']['file_type']
+        default = self.settings['post']
+        settings = self.settings['globals']
+
+        for f in os.listdir(path):
+            if f[len(f)-len(ftype):len(f)] == ftype:
+                l.append(post(os.path.join(path, f), settings, default).pack)
+        return l
+
+    def get_nav(self):
+        l = []
+        pre_define = self.settings['nav']
+        plist = self.posts
+
+        for key, values in pre_define.items():
+            l.append((key, values))
+
+        for i in plist:
+            if i['is_page'] == 1:
+                l.append((i['title'], i['url']))
+        return l
+
+    def rende(self):
+        self.rende_posts()
+        #self.rende_index()
+        #self.rende_feed()
+
+    def rende_posts(self, render = jinja2_render, writer = file_writer):
+        tpl = self.paths['tpl']
+        output = self.paths['site']
+        template_values = {
+                'header': self.settings['header'],
+                'nav': self.nav,
+                'site': self.settings['site']
+                }
+        plist = self.posts
+
+        for i in plist:
+            template_values['post'] = i
             output_name = i['url'] + '.html'
-            formatted = render('posts.html', unit_paths['tpl'], template_values)
+            formatted = render('posts.html', tpl, template_values)
             writer(output_name, output, formatted)
         return
-
-class index(object):
-    def __init__(self, template_values):
-        self.template_values = template_values
-        
-        return
-
-    def rende(self, flist, output = unit_paths['site'], render = jinja2_render, writer = file_writer):
-        template_values = self.template_values
-        template_values['posts'] = flist
-        
-        output_name = 'index.html'
-        formatted = render('index.html', unit_paths['tpl'], template_values)
-        writer(output_name, output, formatted)
-
-        return
-
-if __name__ == '__main__':
-    s = get_settings()
-    p = get_posts()
-    w = posts(s)
-    w.rende(p)
