@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>{{ site.site_name }}</title>
+<subtitle>{{ site.site_slogan }}</subtitle>
+<link rel="alternate" type="text/html" href="http://{{ site.site_domain }}/" />
+<link rel="self" type="application/atom+xml" href="{{ site.feed_url }}" />
+<id>{{ site.site_domain }}/</id>
+<updated>{{ site.site_updated }}</updated>
+<rights>Copyright © 2011 {{ site.author }}</rights>
+{% for post in posts %}
+<entry>
+	{% if post.title %}
+	<title>{{ post.title }}</title>
+	{% endif %}
+	{% if post.link %}
+	<link rel="alternate" type="text/html" href="{{ post.link }}" />
+	{% else %}
+	<link rel="alternate" type="text/html" href="http://{{ site.site_domain }}/{{ post.url }}.html" />
+	{% endif %}
+	<id>tag:{{ site.site_domain }}/{{ post.url }}.html</id>
+	<published>{{ post.created_time }}</published>
+	<updated>{{ post.modified_time }}</updated>
+	<author>
+		<name>{{ site.author }}</name>
+		<uri>http://{{ site.site_domain }}/</uri>
+	</author>
+	<content type="html" xml:base="http://{{ site.site_domain }}/" xml:lang="en"><![CDATA[
+    {{ post.content }}  
+  ]]></content>
+</entry>
+{% endfor %}
+</feed>

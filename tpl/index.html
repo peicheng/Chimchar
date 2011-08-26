@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %} {{ post.title }} {% endblock %}
+{% block head %}
+<link rel="stylesheet" href="themes/{{ header.theme }}.css" />
+{% endblock %}
+
+{% block title %} {{ site.site_name }} {% endblock %}
 
 {% block nav %}
 <ul>
-	<li>
-		<a href="/">blog</a>
-    </li>
     {% if nav %}
-    {% for page in nav %}
+    {% for (name, uri) in nav %}
     <li>
-        <a href="/{{ page.url }}">{{ page.title }}</a>
+        <a href="/{{ uri }}.html">{{ name }}</a>
     </li>
     {% endfor %}
     {% endif %}
-	<li>
-		<a href="/feed.xml">feed</a>
-	</li>
 </ul>
 {% endblock %}
 
@@ -32,6 +30,7 @@
         <h2 class="title">{{ post.title }}</h2>
             {% endif %}
             {{ post.content }}
+        <a href="/{{ post.url }}.html" class="permalink">permalink</a>
     </div>
         {% endfor %}
     {% endif %}

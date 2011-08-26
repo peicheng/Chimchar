@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %} 
-<link rel="stylesheet" href="themes/{{ header['theme'] }}" /> 
+<link rel="stylesheet" href="themes/{{ header['theme'] }}.css" /> 
 {% endblock %}
 
 {% block title %} {{ post.title }} {% endblock %}
@@ -11,7 +11,7 @@
     {% if nav %}
     {% for (name, uri) in nav %}
     <li>
-        <a href="/{{ uri }}">{{ name }}</a>
+        <a href="/{{ uri }}.html">{{ name }}</a>
     </li>
     {% endfor %}
     {% endif %}
@@ -24,5 +24,5 @@
 {% endblock %}
 
 {% block footer %}
-{{ site.slogan }}
+{{ site.site_slogan }}
 {% endblock %}

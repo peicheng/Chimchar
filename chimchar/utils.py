@@ -4,6 +4,7 @@ import codecs
 from jinja2 import Environment, FileSystemLoader
 import markdown
 import os
+import time
 import yaml
 
 base_loader = yaml.load
@@ -119,11 +120,15 @@ class worker(object):
         ftype = self.settings['globals']['file_type']
         default = self.settings['post']
         settings = self.settings['globals']
+        time = os.path.getmtime
+        join = os.path.join
 
         for f in os.listdir(path):
             if f[len(f)-len(ftype):len(f)] == ftype:
-                l.append(post(os.path.join(path, f), settings, default).pack)
-        return l
+                l.append((time(join(path, f)), post(join(path, f), settings, default).pack))
+        l.sort()
+        l.reverse()
+        return [j for (i, j) in l]
 
     def get_nav(self):
         l = []
@@ -140,8 +145,8 @@ class worker(object):
 
     def rende(self):
         self.rende_posts()
-        #self.rende_index()
-        #self.rende_feed()
+        self.rende_index()
+        self.rende_feed()
 
     def rende_posts(self, render = jinja2_render, writer = file_writer):
         tpl = self.paths['tpl']
@@ -159,3 +164,33 @@ class worker(object):
             formatted = render('posts.html', tpl, template_values)
             writer(output_name, output, formatted)
         return
+
+    def rende_index(self, render = jinja2_render, writer = file_writer):
+        #TODO better index render
+        tpl = self.paths['tpl']
+        output = self.paths['site']
+        template_values = {
+                'header': self.settings['header'],
+                'nav': self.nav,
+                'site': self.settings['site'],
+                'posts': self.posts
+                }
+        output_name = 'index.html'
+        formatted = render('index.html', tpl, template_values)
+        writer(output_name, output, formatted)
+        return
+
+    def rende_feed(self, render = jinja2_render, writer = file_writer):
+        tpl = self.paths['tpl']
+        output = self.paths['site']
+        template_values = {
+                'site': self.settings['site'],
+                'posts': self.posts
+                }
+        template_values['site']['site_updated'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        output_name = 'feed.xml'
+        formatted = render('feed.xml', tpl, template_values)
+        writer(output_name, output, formatted)
+
+if __name__ == '__main__':
+    worker().rende()

@@ -28,6 +28,8 @@ site:
     site_slogan: hello Chimchar
     author: Chimchar
     google_analytic_id: ~
+    site_domain: www.chimchar.com
+    feed_url: feed.xml
 
 unit:
 # Chimchar's stuff
