@@ -1,4 +1,4 @@
-<?php
+<?php if (! defined('BASEPATH')) exit ('No direct script access');
 // TODO
 // * .htaccess test
 // * more pretty parser

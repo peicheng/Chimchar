@@ -1,11 +1,10 @@
-<?php
+<?php if (! defined('BASEPATH')) exit ('No direct script access');
 // TODO 
 // * better pre-define global vars
 // * load a instance with config (__construction)
 // * better params for controllers
 // * sub app support
 
-define('BASEPATH', realpath(dirname(__FILE__)));
 define('EXT', '.php');
 define('PLUGINS', realpath(BASEPATH . '/plugins') . '/');
 

@@ -1,4 +1,4 @@
-<?php
+<?php if (! defined('BASEPATH')) exit ('No direct script access');
 //Written by Gabor de Mooij and the RedBeanPHP Community, copyright 2009-2011
 //Licensed New BSD/GPLV2 - see license.txt
  

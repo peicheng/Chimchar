@@ -1,4 +1,4 @@
-<?php
+<?php if (! defined('BASEPATH')) exit ('No direct script access');
 class render {
     function rende($tpl, $tpl_values = '', $return = false) {
         if (file_exists($tpl)) {

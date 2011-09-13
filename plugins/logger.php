@@ -1,4 +1,4 @@
-<?php 
+<?php if (! defined('BASEPATH')) exit ('No direct script access');
 // TODO 
 // * pretty pre-define config (__construction)
 // * formatted logging

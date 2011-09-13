@@ -1,5 +1,4 @@
-<?php
-define('COOKIE_NAME', 'charizard');
+<?php if (! defined('BASEPATH')) exit ('No direct script access');
 
 // TODO 
 // * using session() instead...
