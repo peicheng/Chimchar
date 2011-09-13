@@ -1,0 +1,15 @@
+# If an index.php file is intended to be used as a front controller using glue, this
+# .htaccess is a good starting point.
+RewriteEngine On                                                                                                 
+RewriteBase /Chimchar/
+
+# These directories should never be accessed directly (add more as needed)
+RewriteRule ^(setup\.|README|private/|includes/) - [F,L]
+
+# Only the images, css, and js directories can be accessed directly (add more as needed)
+RewriteCond $1 ^(index\.php|static/)
+# No rewriting
+RewriteRule ^(.*)$ - [PT,L]
+
+# Rewrite all other pages to the front controller
+RewriteRule . index.php
