@@ -1,0 +1,41 @@
+{% include 'header.html' %}
+    <title>{{ site_info.site_name }}</title>
+</head>
+<body>
+<div class="wrapper">
+    <div class="sep120"></div>
+    <div class="nav">
+        <ul>
+            <li>
+        	    <a href="blog">blog</a>
+            </li>
+            {% for page in pages %}
+            <li>
+                <a href="{{ page.url }}">{{ page.title }}</a>
+            </li>
+            {% endfor %}
+            <li>
+        	    <a href="feed.xml">feed</a>
+            </li>
+        </ul>
+    </div>
+    {% for post in posts %}
+    <div class="content">
+        {% if post.link %}
+        <h2 class="title">
+            <a href="{{ post.link }}">{{ post.title }}</a>
+        </h2>
+        {% else %}
+        <h2 class="title">{{ post.title }}</h2>
+        {% endif %}
+        {{ post.formatted_content | raw }}
+        <a href="{{ post.url }}" class="permalink">permalink</a>
+        <p class="created_time">{{ post.created_time }}  • </p> 
+    </div>
+    {% endfor %}
+    <div class="footer">
+        {{ site_info.slogan }}
+    </div>
+</div>
+</body>
+{% include 'footer.html' %}

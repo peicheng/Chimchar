@@ -1,7 +1,7 @@
 <?php if (! defined('BASEPATH')) exit ('No direct script access');
 require_once('rb.php');
 
-R::setup(DB);
+R::setup(Database);
 R::debug(false);
 
 class db {
@@ -48,7 +48,7 @@ class db {
             'sort_order' => 'created_time',
             'limit' => $limit
         );
-        return R::find('posts', "is_page = :is_page AND is_isolated = :is_isolated AND is_index = :is_index ORDER BY :sort_order DESC LIMIT :limit", $r);
+        return R::find('posts', "is_page = :is_page AND is_isolated = :is_isolated AND is_index = :is_index ORDER BY :sort_order LIMIT :limit", $r);
     }
 
     function get_pages($limit = 10000) {
@@ -71,7 +71,7 @@ class db {
     }
 
     /* db writer */
-    function get_new($type) {
+    function get_new($type = 'posts') {
         return R::dispense($type);
     }
 
@@ -87,7 +87,7 @@ class db {
     }
 
     function set_post($p) {
-        if (!empty($p['id']) || !isset($p['id'])) {
+        if (!$p['id']) {
             $post = R::dispense('posts');
         } else {
             $post = $this->get_post_by_id($p['id']);

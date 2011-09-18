@@ -1,24 +1,15 @@
 <?php if (! defined('BASEPATH')) exit ('No direct script access');
-class render {
-    function rende($tpl, $tpl_values = '', $return = false) {
-        if (file_exists($tpl)) {
-            ob_start();
-            
-            if (!empty($tpl_values)) {
-                extract($tpl_values);
-            }
-            include($tpl);
+require_once 'Twig/Autoloader.php';
+Twig_Autoloader::register();
 
-            if ($return) {
-                $buffer = ob_get_clean();
-                return $buffer;
-            } else {
-                ob_end_flush();
-                return true;
-            }
-        } else {
-            return false;
-        }
+class render {
+    function __construct() {
+        $this->loader = new Twig_Loader_Filesystem(TPL);
+        $this->twig = new Twig_Environment($this->loader);
+    }
+    function rende($tpl, $tpl_values = '') {
+        $template = $this->twig->loadTemplate($tpl);
+        return $template->render($tpl_values);
     }
 }
 ?>

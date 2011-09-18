@@ -1,14 +1,17 @@
-<?php if (! defined('BASEPATH')) exit ('No direct script access');
+<?php if (! defined('BASEPATH')) exit('No direct access allowed.'); 
 // TODO 
-// * pretty pre-define config (__construction)
 // * formatted logging
 // * file operating
 
 class logger {
-    function set($file, $enable = false, $format = 'Y-m-d h:i:s') {
-        $this->enable = $enable;
-        $this->file = $file;
-        $this->format = $format;
+    function __construct($param = false) {
+        $this->format = 'Y-m-d h:i:s';
+
+        if ($param) {
+            foreach($param as $arg => $value) {
+                $this->$arg = $value;
+            }
+        }
     }
 
     function log($message, $level = 'error') {

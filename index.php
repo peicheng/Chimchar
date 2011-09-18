@@ -1,32 +1,34 @@
 <?php
-define('BASEPATH', dirname(__FILE__));
-define('TPL', realpath(BASEPATH . '/tpl') . '/');
-define('COOKIE_NAME', 'chimchar');
-define('DB', 'sqlite:imhbc.db');
+define('BASEPATH', realpath(dirname(__FILE__)));
+define('EXT', '.php');
+define('PLUGINS', realpath(BASEPATH.'/plugins').'/');
+define('TPL', realpath(BASEPATH.'/tpl').'/');
+define('LOGFILE', realpath(BASEPATH.'log.txt'));
+define ('Database', 'sqlite:imhbc.db');
 
-require_once('Charizard.php');
-require_once('writer.php');
-require_once('main.php');
-
-require_once('secret.php');
+require_once('Charizard'.EXT);
+require_once('main'.EXT);
+require_once('writer'.EXT);
+require_once('markdown'.EXT);
 
 $urls = array(
+    '/sess' => 'sess',
     '/' => 'index_handler',
     '/blog' => 'posts_handler',
     '/([0-9a-zA-Z\-\.]+)' => 'post_handler',
 
-    "/$secret/overview" => 'overview_handler',
-    "/$secret/settings" => 'settings_handler',
-    "/$secret/new" => 'write_handler',
-    "/$secret/save" => 'post_handler',
-    "/$secret/edit/index" => 'index_write_handler',
-    "/$secret/update/index" => 'index_update_handler',
-    "/$secret/edit/([0-9a-zA-Z\-\_]+)" => 'write_handler',
-    "/$secret/update/([0-9a-zA-Z\-\_]+)" => 'edit_handler',
-    "/$secret/remove/([0-9a-zA-Z\-\_]+)" => 'remove_handler',
-    "/$secret" => 'overview_handler'
+    '/writer/login' => 'login',
+    "/writer/overview" => 'overview_handler',
+    "/writer/settings" => 'settings_handler',
+    "/writer/new" => 'write_handler',
+    "/writer/save" => 'edit_handler',
+    "/writer/edit/index" => 'index_write_handler',
+    "/writer/update/index" => 'index_update_handler',
+    "/writer/edit/([0-9a-zA-Z\-\_]+)" => 'write_handler',
+    "/writer/update/([0-9a-zA-Z\-\_]+)" => 'edit_handler',
+    "/writer/remove/([0-9a-zA-Z\-\_]+)" => 'remove_handler',
+    "/writer" => 'overview_handler'
 );
 
-Charizard::$log = false;
-$app = Charizard::run($urls);
+Charizard::run($urls, '', true);
 ?>

@@ -1,8 +1,16 @@
-<?php if (! defined('BASEPATH')) exit ('No direct script access');
+<?php if (!defined('BASEPATH')) exit('No direct access allowed.');
 // TODO 
 // * testing, testing and testing
 
 class status_coder {
+    function __construct($param = false) {
+        if ($param) {
+            foreach($param as $arg => $value) {
+                $this->$arg = $value;
+            }
+        }
+    }
+
     function set_status_code($code = 200, $message = '') {
         if ($code == '' || !is_numeric($code)) {
             $this->internal_error("Status code must be a numberic");
@@ -67,49 +75,54 @@ class status_coder {
         $this->accepted($message);
     }
 
-    // TODO need to set status code ?
     // 301
-    function redirect($newloc, $base_url = '', $message = '') {
+    function redirect($newloc, $message = '') {
         if ($message == '') {
             $message = 'Moved Permanently';
         }
+        $base_url = $this->base_url;
 
+        // We do not need the base_url here...
+        /*
         if ($newloc[0] === '/') {
             if ($base_url[strlen($base_url)] === '/') {
                 $newloc = substr($newloc, 1);
             }
             $newloc = $base_url . $newloc;
         }
+        */
 
         header("Location: $newloc");
     }
 
-    function _301($newloc, $base_url = '', $message = '') {
-        $this->redirect($newloc, $base_url, $message);
+    function _301($newloc, $message = '') {
+        $this->redirect($newloc, $message);
     }
 
     // 302
-    function found($newloc, $base_url = '', $message = '') {
+    function found($newloc, $message = '') {
         if ($message == '') {
             $message = 'Found';
         }
-        $this->redirect($newloc, $base_url, $message);
+        $base_url = $this->base_url;
+        $this->redirect($newloc, $message);
     }
 
-    function _302($newloc, $base_url = '', $message = '') {
-        $this->_302($newloc, $base_url, $message);
+    function _302($newloc, $message = '') {
+        $this->_302($newloc, $message);
     }
 
     // 303
-    function seeother($newloc, $base_url = '', $message = '') {
+    function seeother($newloc, $message = '') {
         if ($message == '') {
             $message = 'See Other';
         }
-        $this->redirect($newloc, $base_url, $message);
+        $base_url = $this->base_url;
+        $this->redirect($newloc, $message);
     }
 
-    function _303($newloc, $base_url = '', $message = '') {
-        $this->seeother($newloc, $base_url, $message);
+    function _303($newloc, $message = '') {
+        $this->seeother($newloc, $message);
     }
 
     // 304
@@ -117,6 +130,7 @@ class status_coder {
         if ($message == '') {
             $message = 'Not Modified';
         }
+        $base_url = $this->base_url;
         $this->set_status_code(304, $message);
     }
 
@@ -125,15 +139,16 @@ class status_coder {
     }
 
     // 307
-    function temp_redirect($newloc, $base_url = '', $message = '') {
+    function temp_redirect($newloc, $message = '') {
         if ($message == '') {
             $message = 'Temporary Redirect';
         }
-        $this->redirect($newloc, $base_url, $message);
+        $base_url = $this->base_url;
+        $this->redirect($newloc, $message);
     }
 
-    function _307($newloc, $base_url = '', $message = '') {
-        $this->temp_redirect($newloc, $base_url, $message);
+    function _307($newloc, $message = '') {
+        $this->temp_redirect($newloc, $message);
     }
 
     // 400

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+        <title>login</title>
+  </head>
+  <body>
+    <div id="container">
+      <div id="header"></div>
+      <div id="content">
+        <h2>Login Entry</h2>
+        <form action="login" method="post" name="login">
+          <input name="passwd" type="password" class="info_extra_small" />
+          <a href="javascript:document.login.submit()">continue</a>
+        </form>
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+      </div>
+      <div id="footer"></div>
+    </div>
+  </body>
+</html>
