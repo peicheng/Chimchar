@@ -18,10 +18,11 @@ class index_handler {
     function GET() {
         $db = Charizard::load('db');
         $render = Charizard::load('render');
-        
+
         $template_values = array(
             'post' => $db->get_index(),
             'pages' => $db->get_pages(),
+            'u' => Charizard::load('url_helper'),
             'site_info' => $db->get_site()
         );
 
@@ -39,7 +40,8 @@ class post_handler {
         $template_values = array(
             'post' => $db->get_post_by_url($url),
             'pages' => $db->get_pages(),
-            'site_info' => $db->get_site()
+            'site_info' => $db->get_site(),
+            'u' => Charizard::load('url_helper')
         );
 
         if (!$template_values['post']) {
@@ -61,6 +63,7 @@ class posts_handler {
         $template_values = array(
             'posts' => $posts,
             'pages' => $db->get_pages(),
+            'u' => Charizard::load('url_helper'),
             'site_info' => $db->get_site()
         );
 

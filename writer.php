@@ -11,7 +11,6 @@ class auth {
             'lifetime' => '3600',
         );
         $this->session = Charizard::load('sessioner', $param);
-
         $this->status = Charizard::load('status_coder');
     }
 
@@ -52,7 +51,8 @@ class auth {
     }
 
     function back_auth() {
-        $this->status->redirect('login');
+        $u = Charizard::load('url_helper');
+        $this->status->redirect($u->build('/writer/login'));
     }
 }
 
@@ -62,7 +62,8 @@ class login extends auth {
 
     function GET() {
         if ($this->is_pass()) {
-            $this->status->redirect('overview');
+            $u = Charizard::load('url_helper');
+            $this->status->redirect($u->build('/writer/overview'));
         }
 
         $render = Charizard::load('render');
@@ -77,7 +78,8 @@ class login extends auth {
 
     function POST() {
         if ($this->do_auth($_POST['passwd'])) {
-            $this->status->seeother('overview');
+            $u = Charizard::load('url_helper');
+            $this->status->seeother($u->build('/writer/overview'));
         } else {
             $this->back_auth();
         }
@@ -110,7 +112,8 @@ class remove_handler extends auth {
             $db->remove_post($id);
         }
 
-        $this->status->redirect('../overview');
+        $u = Charizard::load('url_helper');
+        $this->status->redirect($u->build('/writer/overview'));
     }
 
     function POST($id) {
@@ -132,6 +135,7 @@ class overview_handler extends auth {
         rsort($posts);
         $template_values = array(
             'site_info' => $db->get_site(),
+            'u' => Charizard::load('url_helper'),
             'posts' => $posts
         );
 
@@ -152,6 +156,7 @@ class write_handler extends auth {
 
         $template_values = array(
             'site_info' => $db->get_site(),
+            'u' => Charizard::load('url_helper'),
         );
 
         if ($id) {
@@ -181,6 +186,7 @@ class index_write_handler extends auth {
             'site_info' => $db->get_site(),
             'mode' => 'edit',
             'post' => $db->get_index(),
+            'u' => Charizard::load('url_helper'),
         );
 
         $path = 'writer/index_write.html';
@@ -197,7 +203,8 @@ class index_update_handler extends auth {
         $p['formatted_content'] = Markdown($p['content']);
         $db->set_index($p);
 
-        $status_coder->_301("../overview");
+        $u = Charizard::load('url_helper');
+        $status_coder->_301($u->build('/writer/overview'));
     }
 }
 
@@ -209,9 +216,14 @@ class edit_handler extends auth {
         $p = $_POST;
         $p['formatted_content'] = Markdown($p['content']);
         $p['id'] = $id;
+        $p['modified_time'] = date(DATE_FORMAT);
+        if (!$id) {
+            $p['created_time'] = date(DATE_FORMAT);
+        }
         $db->set_post($p);
 
-        $status_coder->_301("../overview");
+        $u = Charizard::load('url_helper');
+        $status_coder->_301($u->build('/writer/overview'));
     }
 
     function POST($id = false) {
@@ -231,6 +243,7 @@ class settings_handler extends auth {
         
         $template_values = array(
             'site_info' => $db->get_site(),
+            'u' => Charizard::load('url_helper'),
         );
 
         $path = 'writer/settings.html';
@@ -244,7 +257,8 @@ class settings_handler extends auth {
         $s = $_POST;
         $db->set_site($s);
 
-        $status_coder->_301("overview");
+        $u = Charizard::load('url_helper');
+        $status_coder->_301($u->build('/writer/overview'));
     }
 }
 ?>
