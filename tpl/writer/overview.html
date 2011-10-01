@@ -26,7 +26,7 @@
                     	    <th width="auto">Title</th>
                     	    <th width="150">Created</th>
                         	<th width="150">Last Modified</th>
-                    	    <th width="50">View</th>
+                    	    <!-- th width="50">View</th -->
                         </tr>
                         {% if posts %}
                         {% for post in posts %}
@@ -48,7 +48,7 @@
                             </td>
                             <td class="{{ c }}">{{ post.created_time }}</td>
                             <td class="{{ c }}">{{ post.modified_time }}</td>
-                            <td class="{{ c }}">{{ post.view_time }}</td>
+                            <!-- td class="{{ c }}">{{ post.view_time }}</td -->
                         </tr>
                         {% endfor %}
                         {% endif %}
