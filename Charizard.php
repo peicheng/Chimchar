@@ -5,6 +5,7 @@ class Charizard {
     static $urls;
     static $path;
     static $base_url;
+    static $current;
     static $method;
     static $log = false;
 
@@ -24,7 +25,7 @@ class Charizard {
         }
     }
 
-    static function run($urls, $base_url = false, $log = false) {
+    static function run($urls, $log = false) {
         if (self::$log != $log) {
             self::$log = $log;
         }
@@ -32,22 +33,19 @@ class Charizard {
         self::$urls = $urls;
 
         // Load the kernel stuff.
-        if ($base_url) {
-            $require = self::load('requester', array('base_url' => $base_url));
-        } else {
-            $requester = self::load('requester');
-        }
-        $status = self::load('status_coder', array('base_url' => $requester->get_base_url()));
+        $requester = self::load('requester');
+        $status = self::load('status_coder');
         $logger = self::load('logger', array('file' => LOGFILE, 'enable' => $log));
 
         // Get the request.
-        $base_url = self::$base_url = ($base_url)?$requester->get_base_url():$base_url;
-        $path = self::$path = $requester->get_path();
+        $base_url = self::$base_url = $requester->base_url;
+        $path = self::$path = $requester->path;
+        $current = self::$current = $requester->current;
         if (!$path) {
             $logger->log("$path didn't found.", 'error');
             $status->_404();
         }
-        $method = self::$method = $requester->get_method();
+        $method = self::$method = $requester->method;
         if (!$method) {
             $logger->log("$method didn't found.", 'error');
             $status->_405();
@@ -67,7 +65,6 @@ class Charizard {
                     $obj = new $class;
                     if (method_exists($obj, $method)) {
                         $logger->log("$path found.", 'success');
-                        // TODO better param
                         $obj->$method($matches[1]);
                     } else {
                         $logger->log("$method doesn't exists.", 'error');

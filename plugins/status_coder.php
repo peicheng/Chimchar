@@ -80,7 +80,7 @@ class status_coder {
         if ($message == '') {
             $message = 'Moved Permanently';
         }
-        $base_url = $this->base_url;
+        $base_url = Charizard::$base_url;
 
         // We do not need the base_url here...
         /*
@@ -104,7 +104,7 @@ class status_coder {
         if ($message == '') {
             $message = 'Found';
         }
-        $base_url = $this->base_url;
+        $base_url = Charizard::$base_url;
         $this->redirect($newloc, $message);
     }
 
@@ -117,7 +117,7 @@ class status_coder {
         if ($message == '') {
             $message = 'See Other';
         }
-        $base_url = $this->base_url;
+        $base_url = Charizard::$base_url;
         $this->redirect($newloc, $message);
     }
 
@@ -130,7 +130,7 @@ class status_coder {
         if ($message == '') {
             $message = 'Not Modified';
         }
-        $base_url = $this->base_url;
+        $base_url = Charizard::$base_url;
         $this->set_status_code(304, $message);
     }
 
@@ -143,7 +143,7 @@ class status_coder {
         if ($message == '') {
             $message = 'Temporary Redirect';
         }
-        $base_url = $this->base_url;
+        $base_url = Charizard::$base_url;
         $this->redirect($newloc, $message);
     }
 

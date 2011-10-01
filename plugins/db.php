@@ -89,17 +89,18 @@ class db {
     function set_post($p) {
         if (!$p['id']) {
             $post = R::dispense('posts');
+            $post->import($p, 'title, url, link, content, formatted_content, modified_time, created_time, is_page, is_isolated, is_index');
         } else {
             $post = $this->get_post_by_id($p['id']);
+            $post->import($p, 'title, url, link, content, formatted_content, modified_time, is_page, is_isolated, is_index');
         }
-        $post->import($p, 'title, url, link, content, formatted_content, modified_time, created_time, modified_time, is_page, is_isolated, is_index');
         $id = R::store($post);
         return $id;
     }
 
     function set_index($p) {
         $post = $this->get_index();
-        $post->import($p, 'title, url, link, content, formatted_content, modified_time, created_time, modified_time, is_page, is_isolated, is_index');
+        $post->import($p, 'title, url, link, content, formatted_content, is_page, is_isolated, is_index');
         $id = R::store($post);
         return $id;
     }
