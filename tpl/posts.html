@@ -7,15 +7,15 @@
     <div class="nav">
         <ul>
             <li>
-        	    <a href="blog">blog</a>
+                <a href="{{ u.build('/blog') }}">blog</a>
             </li>
             {% for page in pages %}
             <li>
-                <a href="{{ page.url }}">{{ page.title }}</a>
+                <a href="{{ u.build(['/', page.url]|join) }}">{{ page.title }}</a>
             </li>
             {% endfor %}
             <li>
-        	    <a href="feed.xml">feed</a>
+                <a href="{{ u.build('/feed.xml') }}">feed</a>
             </li>
         </ul>
     </div>
@@ -23,13 +23,13 @@
     <div class="content">
         {% if post.link %}
         <h2 class="title">
-            <a href="{{ post.link }}">{{ post.title }}</a>
+            <a href="{{ u.build(['/', post.link]|join) }}">{{ post.title }}</a>
         </h2>
         {% else %}
         <h2 class="title">{{ post.title }}</h2>
         {% endif %}
         {{ post.formatted_content | raw }}
-        <a href="{{ post.url }}" class="permalink">permalink</a>
+        <a href="{{ u.build(['/', post.url]|join) }}" class="permalink">permalink</a>
         <p class="created_time">{{ post.created_time }}  • </p> 
     </div>
     {% endfor %}

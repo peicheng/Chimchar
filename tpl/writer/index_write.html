@@ -3,20 +3,20 @@
     <head lang="zh-CN">
         <meta charset="utf-8" />
         <title>write</title>
-        <link rel="stylesheet" href="../../../static/writer/style.css" />
-        <link rel="shortcut icon" href="../../../static/shared/favicon.ico" />
+        <link rel="stylesheet" href="{{ u.build('/static/writer/style.css') }}" />
+        <link rel="shortcut icon" href="{{ u.build('/static/shared/favicon.ico') }}" />
     </head>
     <body>
          <div id="container">
              <div id="header">
-                <a href="../../">origin</a>
-                <a href="../../settings">site setting</a>
-                <a href="../../../blog">visit site</a>
+                <a href="{{ u.build('/writer') }}">origin</a>
+                <a href="{{ u.build('/writer/settings') }}">site setting</a>
+                <a href="{{ u.build('/blog') }}">visit site</a>
              </div>
              <div class="sep40"></div>
              <div id="main">
                  <div id="content">
-                     <form id="writer" action="../../update/index" name="writer" method="post">
+                     <form id="writer" action="{{ u.build('/writer/update/index') }}" name="writer" method="post">
                          <div class="inner">
                             Title
                             <br />
@@ -28,7 +28,7 @@
                             <textarea name="content" class="input_box">{% if post.content %}{{ post.content|escape }}{% endif %}</textarea>
                             <br />
                             <br />
-                            <a id="doSubmit" href="javascript:document.writer.submit()">Save</a>&nbsp;&nbsp;{% if mode == 'edit' %}<a id="doDelete" href="#;" onclick="if (confirm('Are you sure?')) { location.href = '../../remove/{{ post.id }}';}">Delete</a>{% else %}<a id="doDiscard" href="../../">Discard</a>{% endif %}
+                            <a id="doSubmit" href="javascript:document.writer.submit()">Save</a>&nbsp;&nbsp;{% if mode == 'edit' %}<a id="doDelete" href="#;" onclick="if (confirm('Are you sure?')) { location.href = '{{ u.build(['/writer/remove', post.id]|join) }}';}">Delete</a>{% else %}<a id="doDiscard" href="{{ u.build('/writer') }}">Discard</a>{% endif %}
                          </div>
                      </form>
                  </div>

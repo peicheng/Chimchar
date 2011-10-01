@@ -3,12 +3,12 @@
     <head>
         <meta charset="utf-8"/>
         <title>I'm hbc</title>
-        <link rel="shortcut icon" href="static/shared/favicon.ico" />
+        <link rel="shortcut icon" href="{{ u.build('/static/shared/favicon.ico') }}" />
         <link rel="alternate" type="application/atom+xml" href="feed.xml" /> 
-        <link rel="stylesheet" href="static/themes/index.css" />
-        <script type="text/javascript" src="static/shared/ext/jquery-1.6.1.min.js"></script>
-        <script type="text/javascript" src="static/shared/ext/jquery.lifestream.min.js"></script>
-        <script type="text/javascript" src="static/shared/ext/lifestream.js"></script>
+        <link rel="stylesheet" href="{{ u.build('/static/themes/index.css') }}" />
+        <script type="text/javascript" src="{{ u.build('/static/shared/ext/jquery-1.6.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ u.build('/static/shared/ext/jquery.lifestream.min.js') }}"></script>
+        <script type="text/javascript" src="{{ u.build('/static/shared/ext/lifestream.js') }}"></script>
         <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', '{{ site_info.google_analytic_id }}']);
@@ -36,7 +36,7 @@
                     </div>
                     {% for page in pages %}
                     <div class="item {{ pages.title }}">
-                        <a href="{{ page.url }}">{{ page.title }}</a>
+                        <a href="{{ u.build(['/', page.url]|join) }}">{{ page.title }}</a>
                     </div>
                     {% endfor %}
                     <div class="lifestream item">

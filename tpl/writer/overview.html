@@ -3,22 +3,22 @@
     <head lang="zh-CN">
         <meta charset="utf-8" />
         <title>origin</title>
-        <link rel="stylesheet" href="../static/writer/style.css" />
-        <link rel="shortcut icon" href="../static/shared/favicon.ico" />
+        <link rel="stylesheet" href="{{ u.build('/static/writer/style.css') }}" />
+        <link rel="shortcut icon" href="{{ u.build('/static/shared/favicon.ico') }}" />
     </head>
     <body>
         <div id="container">
             <div id="header">
-                <a href="">origin</a>
-                <a href="../settings">site setting</a>
-                <a href="../blog">visit site</a>
+                <a href="{{ u.build('/writer') }}">origin</a>
+                <a href="{{ u.build('/writer/settings') }}">site setting</a>
+                <a href="{{ u.build('/blog') }}">visit site</a>
             </div>
             <div class="sep40"></div>
             <div id="main">
                 <div id="content">
                     <div id="controller">
-                        <a href="new/">new post</a>
-                        <a href="edit/index/">edit index</a>
+                        <a href="{{ u.build('/writer/new') }}">new post</a>
+                        <a href="{{ u.build('/writer/edit/index') }}">edit index</a>
                     </div>
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" id="posts">
                         <tr>
@@ -31,10 +31,11 @@
                         {% if posts %}
                         {% for post in posts %}
                         <tr>
-                            <td class="{{ loop.cycle('odd', 'even') }}"></td>
-                            <td class="{{ loop.cycle('odd', 'even') }}">
-                                <a href="edit/{{ post.id }}" class="title">{{ post.title }}</a>
-                                <a href="../{{ post.url }}" class="visit">»</a>
+                            {% if loop.index is divisibleby(2) %} {% set c = 'even' %} {% else %} {% set c = 'odd' %} {% endif %}
+                            <td class="{{ c }}"></td>
+                            <td class="{{ c }}">
+                                <a href="{{ u.build(['/writer/edit/', post.id]|join) }}" class="title">{{ post.title }}</a>
+                                <a href="{{ u.build(['/', post.url]|join) }}" class="visit">»</a>
                                 {% if post.is_page == 1 %}
                                 <div class="gray_badge">PAGE</div>
                                 {% endif %}
@@ -43,11 +44,11 @@
                                 {% endif %}
                                 <br />
                                 <small>{{ post.category }}</small>
-                                <a href="#" onclick="if (confirm('Are you sure?')) { location.href = 'remove/{{ post.id }}';}" class="delete">remove</a>
+                                <a href="#" onclick="if (confirm('Are you sure?')) { location.href = '{{ u.build(['/writer/remove/', post.id]|join) }}';}" class="delete">remove</a>
                             </td>
-                            <td class="{{ loop.cycle('odd', 'even') }}">{{ post.created_time }}</td>
-                            <td class="{{ loop.cycle('odd', 'even') }}">{{ post.modified_time }}</td>
-                            <td class="{{ loop.cycle('odd', 'even') }}">{{ post.view_time }}</td>
+                            <td class="{{ c }}">{{ post.created_time }}</td>
+                            <td class="{{ c }}">{{ post.modified_time }}</td>
+                            <td class="{{ c }}">{{ post.view_time }}</td>
                         </tr>
                         {% endfor %}
                         {% endif %}
