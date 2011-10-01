@@ -24,8 +24,8 @@ class requester {
     function _get_base() {
         # do you use hatccess?
         #$base_url = $this->scheme . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'];
-        $script = split('/', $_SERVER['SCRIPT_NAME']);
-        $parent = '/' . $script[1];
+        $script = split('/index.php', $_SERVER['SCRIPT_NAME']);
+        $parent = $script[0];
         $base_url = $this->scheme . '://' . $_SERVER['SERVER_NAME'] . $parent;
         return $base_url;
     }
