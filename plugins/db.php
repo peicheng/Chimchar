@@ -74,6 +74,20 @@ class db {
         return R::findOne('minisite', 'id=:id', $r);
     }
 
+    function get_post_by_url($url) {
+        $r = array(
+            'url' => $url
+        );
+        return R::findOne('posts', 'url=:url', $r);
+    }
+
+    function get_minisite_by_id($url) {
+        $r = array(
+            'url' => $url
+        );
+        return R::findOne('minisite', 'url=:url', $r);
+    }
+
     function get_posts($limit = 100000) {
         $r = array(
             'order' => 'created_time',
