@@ -1,84 +1,125 @@
-<?php if (! defined('BASEPATH')) exit ('No direct script access');
+<?php if (! defined('BASEPATH')) exit ('No direct script access!');
 require_once('rb.php');
 
 R::setup(Database);
 R::debug(false);
 
-class db {
 
-    /* db reader */
+/*
+ * How your database looks like?
+ *
+ * Table site_info:
+ *      id: Integer
+ *      site_name: String
+ *      author: String
+ *      site_slogan: String
+ *      google_analytic_id: String
+ *
+ * Table posts:
+ *      id: Integer
+ *      title: String
+ *      url: String
+ *      link: String
+ *      content: String
+ *      formatted_content: String
+ *      is_page: Integer
+ *      is_isolated: Integer
+ *      created_time: String
+ *      modified_time: String
+ *
+ * Table minisite:
+ *      id: Integer
+ *      title: String
+ *      url: String
+ *      content: String
+ *      formatted_content: String
+ *      tpl: String
+ *      style: String
+ *      created_time: String
+ *      modified_time: String
+ *
+ * Table index:
+ *      id: Integer
+ *      title: String
+ *      url: String
+ *      content: String
+ *      formatted_content: String
+ *      created_time: String
+ *      modified_time: String
+ * */
+
+// TODO Does redbean support auto generate databae?
+
+class db {
+    // reader
     function get_site() {
         return R::findOne('site_setting');
     }
 
     function get_index() {
-        $r = array(
-            'is_index' => 1
-        );
-        return R::findOne('posts', "is_index = :is_index", $r);
-    }
-
-    function get_post_by_url($url) {
-        $r = array(
-            'url' => $url
-        );
-        return R::findOne('posts', "url = :url", $r);
+        return R::findOne('index');
     }
 
     function get_post_by_id($id) {
         $r = array(
             'id' => $id
         );
-        return R::findOne('posts', "id = :id", $r);
+        return R::findOne('posts', 'id=:id', $r);
     }
 
-    function get_all($limit = 10000) {
+    function get_minisite_by_id($id) {
         $r = array(
-            'sort_order' => 'created_time',
+            'id' => $id
+        );
+        return R::findOne('minisite', 'id=:id', $r);
+    }
+
+    function get_posts($limit = 100000) {
+        $r = array(
+            'order' => 'created_time',
             'limit' => $limit
         );
-        return R::find('posts', "1 ORDER BY :sort_order DESC LIMIT :limit", $r);
+        return R::find('posts', "1 ORDER BY :order DESC LIMIT :limit", $r);
     }
 
-    function get_posts($limit = 10000) {
+    function get_minisites($limit = 100000) {
         $r = array(
-            'is_page' => 0,
-            'is_isolated' => 0,
-            'is_index' => 0,
-            'sort_order' => 'created_time',
+            'order' => 'created_time',
             'limit' => $limit
         );
-        return R::find('posts', "is_page = :is_page AND is_isolated = :is_isolated AND is_index = :is_index ORDER BY :sort_order LIMIT :limit", $r);
     }
 
-    function get_pages($limit = 10000) {
+    function get_pages($limit = 100000) {
         $r = array(
             'is_page' => 1,
-            'is_isolated' => 0,
-            'is_index' => 0,
             'limit' => $limit
         );
-        return R::find('posts', "is_page = :is_page AND is_isolated = :is_isolated AND is_index = :is_index ORDER BY :sort_order DESC LIMIT :limit", $r);
+        return R::find('posts' "is_page = :is_page AND is_isolated = 0 ORDER BY created_time DESC LIMIT :limit", $r);
     }
 
-    function get_isolated($limit = 10000) {
+    function get_isolated($limit = 100000) {
         $r = array(
             'is_isolated' => 1,
-            'is_index' => 0,
             'limit' => $limit
         );
-        return R::find('posts', "is_isolated = :is_isolated AND is_index = :is_index ORDER BY :sort_order DESC LIMIT :limit", $r);
+        return R::find('posts', "is_isolated = :is_isolated ORDER BY created_time DESC LIMIT :limit", $r);
     }
+    // end of reader
 
-    /* db writer */
-    function get_new($type = 'posts') {
+    // writer
+    function _get_new($type) {
         return R::dispense($type);
     }
 
-    function set_site($s) {
+    function set_site($settings) {
         $site = $this->get_site();
-        $site->import($s, 'id, site_name, site_slogan, author, google_analytic_id');
+        $site->import($s, 'site_name, site_slogan, author, google_analytic_id');
         R::store($site);
+    }
+
+    function set_index($index) {
+        $post = $this->get_index();
+        $post->import($index, 'title, url, content, formatted_content, modified_time, created_time');
     }
 
     function remove_post($id) {
@@ -86,24 +127,38 @@ class db {
         R::trash($post);
     }
 
+    function remove_minisite($id) {
+        $minisite = $this->get_minisite_by_id($id);
+        R::trash($minisite);
+    }
+
     function set_post($p) {
         if (!$p['id']) {
+            // new
             $post = R::dispense('posts');
-            $post->import($p, 'title, url, link, content, formatted_content, modified_time, created_time, is_page, is_isolated, is_index');
+            $post->import($p, 'title, url, link, content, formatted_content, modified_time, created_time, is_page, is_isolated');
         } else {
+            // update
             $post = $this->get_post_by_id($p['id']);
-            $post->import($p, 'title, url, link, content, formatted_content, modified_time, is_page, is_isolated, is_index');
+            $post->import($p, 'title, url, link, content, formatted_content, modified_time, is_page, is_isolated');
         }
         $id = R::store($post);
         return $id;
     }
 
-    function set_index($p) {
-        $post = $this->get_index();
-        $post->import($p, 'title, url, link, content, formatted_content, is_page, is_isolated, is_index');
+    function set_minisite($p) {
+        if (!$p['id']) {
+            // new
+            $post = R::dispense('minisite');
+            $post->import($p, 'title, url, content, formatted_content, modified_time, created_time, tpl, style');
+        } else {
+            // update
+            $post = $this->get_post_by_id($p['id']);
+            $post->import($p, 'title, url, content, formatted_content, modified_time, tpl, style');
+        }
         $id = R::store($post);
         return $id;
     }
+    // end of writer
 }
-
 ?>
