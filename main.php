@@ -1,73 +1,88 @@
-<?php if (!defined('BASEPATH')) exit('No direct access allowed');
-
-class sess {
-    function GET() {
-        echo "dude";
-        $s = Charizard::load('sessioner');
-        $s->sess_name = 'test';
-        //$s->lifetime_minutes(5);
-        $s->start_session();
-        //$s->set_session(array("test" => True));
-        var_dump($_COOKIE);
-        var_dump($s);
-        $s->kill_session();
-    }
-}
+<?php if (!defined('BASEPATH')) exit('No direct script access!');
 
 class index_handler {
     function GET() {
         $db = Charizard::load('db');
         $render = Charizard::load('render');
+        $url_helper = Charizard::load('url_helper');
 
         $template_values = array(
-            'post' => $db->get_index(),
-            'pages' => $db->get_pages(),
-            'u' => Charizard::load('url_helper'),
-            'site_info' => $db->get_site()
-        );
-
-        $path = 'index.html';
-        echo $render->rende($path, $template_values);
-    }
-}
-
-class post_handler {
-    function GET($url) {
-        $db = Charizard::load('db');
-        $render = Charizard::load('render');
-        $status_coder = Charizard::load('status_coder');
-
-        $template_values = array(
-            'post' => $db->get_post_by_url($url),
-            'pages' => $db->get_pages(),
             'site_info' => $db->get_site(),
-            'u' => Charizard::load('url_helper')
+            'post' => $db->get_index(),
+            'page' => $db->get_pages(),
+            'u' => $url_helper
         );
+        $path = 'chimchar/index.html';
 
-        if (!$template_values['post']) {
-            $status_coder->_404("$url not found!");
-        }
-
-        $path = 'post.html';
         echo $render->rende($path, $template_values);
     }
 }
 
-class posts_handler {
+class feed_handler {
     function GET() {
         $db = Charizard::load('db');
         $render = Charizard::load('render');
+        $url_helper = Charizard::load('url_helper');
 
-        $posts = $db->get_posts();
-        rsort($posts);
         $template_values = array(
-            'posts' => $posts,
+            'site_info' => $db->get_site(),
+            'posts' => $db->get_posts(),
+            'u' => $url_helper
+        );
+        $path = 'shared/feed.xml';
+
+        echo $render->rende($path, $template_values);
+    }
+}
+
+class blog_handler {
+    function GET() {
+        $db = Charizard::load('db');
+        $render = Charizard::load('render');
+        $url_helper = Charizard::load('url_helper');
+
+        $template_values = array(
+            'site_info' => $db->get_site(),
+            'posts' => $db->get_posts(),
             'pages' => $db->get_pages(),
-            'u' => Charizard::load('url_helper'),
-            'site_info' => $db->get_site()
+            'u' => $url_helper
+        );
+        $path = 'chimchar/posts.html';
+
+        echo $render->rende($path, $template_values);
+    }
+}
+
+class main_handler {
+    function GET($url) {
+        $db = Charizard::load('db');
+        $render = Charizard::load('render');
+        $url_helper = Charizard::load('url_helper');
+        $status = Charizard::load('status_coder');
+
+        // try mini site
+        $post = $db->get_minisite_by_url($url);
+        if ($post) {
+            $path = $post['tpl'] . '/post.html';
+            $style = $post['tpl'] . '/' . $post['style'] . '.css';
+        } else {
+            $post = $db->get_post_by_url($url);
+            $path = 'chimchar/posts.html';
+            $style = 'chimchar/style.css';
+        }
+        // didn't catch it
+        if (!$post) {
+            $status->_404("$url not found!");
+        }
+
+        $template_values = array(
+            'site_info' => $db->get_site(),
+            'post' => $post,
+            'pages' => $db->get_pages(),
+            'style' => $style,
+            'u' => $url_helper
         );
 
-        $path = 'posts.html';
         echo $render->rende($path, $template_values);
     }
 }
