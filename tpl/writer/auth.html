@@ -3,23 +3,23 @@
 	<head>
 		<meta charset="utf-8" />
     <title>{{ site_info.site_name }} » auth </title>
-    <link rel="stylesheet" media="screen" href="/static/writer/lite.css" />
-    <link rel="shortcut icon" href="/static/shared/favicon.ico" />
+    <link rel="stylesheet" media="screen" href="{{ u.build('/static/writer/lite.css') }}" />
+    <link rel="shortcut icon" href="{{ u.build('/static/shared/favicon.ico') }}" />
   </head>
   <body>
-    <div id="container">
-      <div id="header"></div>
-      <div id="content">
-        <h2>Login Entry</h2>
-        <form action="/writer/auth" method="post" name="auth">
-          <input name="passwd" type="password" class="info_extra_small" />
-          <a href="javascript:document.auth.submit()">continue</a>
-        </form>
-        {% if message %}
-        <p class="message">{{ message }}</p>
-        {% endif %}
+      <div class="container">
+        <div class="header"></div>
+        <div class="main">
+            <div class="content">
+                <h2>Login Entry</h2>
+                <div class="message"></div>
+                <form method="post" name="auth" action="{{ u.build('/writer/login') }}">
+                    <input name="passwd" type="password" class="input_extra_small" />
+                    <a href="javascript:document.auth.submit()" class="btn">Continue</a>
+                </form>
+            </div>
+        </div>
+        <div class="footer"></div>
       </div>
-      <div id="footer"></div>
-    </div>
   </body>
 </html>

@@ -57,6 +57,7 @@ class auth {
 }
 
 /*
+ * TODO
  * Need a postman?
  *
  * message => {
@@ -65,7 +66,7 @@ class auth {
  *      'success': String
  * }
  *
- * I'll be cover with too many message...
+ * 
  * */
 $message = array(
     'error' => false,
@@ -85,10 +86,11 @@ class login extends auth {
         $template_values = array(
             'title' => 'login',
             'message' => $message,
+            'u' => Charizard::load('url_helper')
         );
 
         $path = 'writer';
-        echo $render->rende('login.html', $path, $template_values);
+        echo $render->rende('auth.html', $path, $template_values);
     }
 
     function POST() {
