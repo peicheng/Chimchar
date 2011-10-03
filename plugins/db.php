@@ -144,7 +144,10 @@ class db {
     }
 
     function set_index($index) {
-        $post = $this->get_index();
+        $post = $this->get_new('index');
+        if (!$post) {
+            $post = $this->get_post();
+        }
         $post->import($index, 'title, url, content, formatted_content');
     }
 
@@ -179,7 +182,7 @@ class db {
             $post->import($p, 'title, url, content, formatted_content, modified_time, created_time, tpl, style');
         } else {
             // update
-            $post = $this->get_post_by_id($p['id']);
+            $post = $this->get_minisite_by_id($p['id']);
             $post->import($p, 'title, url, content, formatted_content, modified_time, tpl, style');
         }
         $id = R::store($post);
