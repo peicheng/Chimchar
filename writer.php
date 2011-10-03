@@ -355,7 +355,7 @@ class update_index_handler extends auth {
 }
 
 class update_post_handler extends auth {
-    function GET($id = false) {
+    function POST($id = false) {
         $db = Charizard::load('db');
         $status_coder = Charizard::load('status_coder');
         $u = Charizard::load('url_helper');
@@ -366,7 +366,7 @@ class update_post_handler extends auth {
         $p['formatted_content'] = $mkd->rende($p['content']);
         $p['modified_time'] = date(DATE_FORMAT);
         if (!$id) {
-            $p['modified_time'] = date(DATE_FORMAT);
+            $p['created_time'] = date(DATE_FORMAT);
         }
         $db->set_post($p);
 
@@ -379,14 +379,10 @@ class update_post_handler extends auth {
 
         $status_coder->_301($u->build('/writer/overview'));
     }
-
-    function POST($id = false) {
-        $this->GET($id);
-    }
 }
 
 class update_minisite_handler extends auth {
-    function GET($id = false) {
+    function POST($id = false) {
         $db = Charizard::load('db');
         $status_coder = Charizard::load('status_coder');
         $u = Charizard::load('url_helper');
@@ -397,7 +393,7 @@ class update_minisite_handler extends auth {
         $p['formatted_content'] = $mkd->rende($p['content']);
         $p['modified_time'] = date(DATE_FORMAT);
         if (!$id) {
-            $p['modified_time'] = date(DATE_FORMAT);
+            $p['created_time'] = date(DATE_FORMAT);
         }
         $db->set_minisite($p);
 
@@ -409,10 +405,6 @@ class update_minisite_handler extends auth {
         );
 
         $status_coder->_301($u->build('/writer/overview'));
-    }
-
-    function POST($id = false) {
-        $this->GET($id);
     }
 }
 
