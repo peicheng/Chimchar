@@ -81,7 +81,7 @@ class db {
         return R::findOne('posts', 'url=:url', $r);
     }
 
-    function get_minisite_by_id($url) {
+    function get_minisite_by_url($url) {
         $r = array(
             'url' => $url
         );
@@ -108,7 +108,7 @@ class db {
             'is_page' => 1,
             'limit' => $limit
         );
-        return R::find('posts' "is_page = :is_page AND is_isolated = 0 ORDER BY created_time DESC LIMIT :limit", $r);
+        return R::find('posts', "is_page = :is_page AND is_isolated = 0 ORDER BY created_time DESC LIMIT :limit", $r);
     }
 
     function get_isolated($limit = 100000) {
