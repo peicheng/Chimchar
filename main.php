@@ -12,9 +12,9 @@ class index_handler {
             'page' => $db->get_pages(),
             'u' => $url_helper
         );
-        $path = 'chimchar/index.html';
+        $path = 'chimchar';
 
-        echo $render->rende($path, $template_values);
+        echo $render->rende('index.html', $path, $template_values);
     }
 }
 
@@ -29,9 +29,9 @@ class feed_handler {
             'posts' => $db->get_posts(),
             'u' => $url_helper
         );
-        $path = 'shared/feed.xml';
+        $path = 'shared';
 
-        echo $render->rende($path, $template_values);
+        echo $render->rende('feed.xml', $path, $template_values);
     }
 }
 
@@ -47,9 +47,9 @@ class blog_handler {
             'pages' => $db->get_pages(),
             'u' => $url_helper
         );
-        $path = 'chimchar/posts.html';
+        $path = 'chimchar';
 
-        echo $render->rende($path, $template_values);
+        echo $render->rende('posts.html', $path, $template_values);
     }
 }
 
@@ -63,11 +63,11 @@ class main_handler {
         // try mini site
         $post = $db->get_minisite_by_url($url);
         if ($post) {
-            $path = $post['tpl'] . '/post.html';
+            $path = $post['tpl'];
             $style = $post['tpl'] . '/' . $post['style'] . '.css';
         } else {
             $post = $db->get_post_by_url($url);
-            $path = 'chimchar/posts.html';
+            $path = 'chimchar';
             $style = 'chimchar/style.css';
         }
         // didn't catch it
@@ -83,7 +83,7 @@ class main_handler {
             'u' => $url_helper
         );
 
-        echo $render->rende($path, $template_values);
+        echo $render->rende('post.html', $path, $template_values);
     }
 }
 ?>
