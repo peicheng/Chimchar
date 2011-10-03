@@ -136,7 +136,10 @@ class db {
 
     function set_site($settings) {
         $site = $this->get_site();
-        $site->import($s, 'site_name, site_slogan, author, google_analytic_id');
+        if (!$site) {
+            $site = $this->get_new('site_setting');
+        }
+        $site->import($settings, 'site_name, site_slogan, author, google_analytic_id');
         R::store($site);
     }
 
