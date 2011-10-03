@@ -8,8 +8,8 @@ connect = 'sqlite:///%s' % (db)
 engine = create_engine(connect, encoding='utf8', convert_unicode=True, echo=False)
 Base = declarative_base()
 
-class site_info(Base):
-    __tablename__ = 'site_info'
+class site_setting(Base):
+    __tablename__ = 'site_setting'
     id = Column(Integer, primary_key=True)
     site_name = Column(String)
     author = Column(String)
