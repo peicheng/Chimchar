@@ -1,7 +1,7 @@
 # If an index.php file is intended to be used as a front controller using glue, this
 # .htaccess is a good starting point.
-RewriteEngine On                                                                                                 
-RewriteBase /Chimchar
+RewriteEngine On                                                                                     
+RewriteBase /Chimchar/
 
 # These directories should never be accessed directly (add more as needed)
 RewriteRule ^(setup\.|README|private/|includes/) - [F,L]

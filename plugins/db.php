@@ -146,9 +146,11 @@ class db {
     function set_index($index) {
         $post = $this->get_new('index');
         if (!$post) {
-            $post = $this->get_post();
+            $post = $this->get_new('index');
         }
         $post->import($index, 'title, url, content, formatted_content');
+
+        R::store($post);
     }
 
     function remove_post($id) {

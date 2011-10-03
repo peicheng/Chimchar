@@ -1,36 +1,42 @@
 <?php
+/* Where are you now? */
 define('BASEPATH', realpath(dirname(__FILE__)));
 define('EXT', '.php');
-define('PLUGINS', realpath(BASEPATH.'/plugins').'/');
-define('TPL', realpath(BASEPATH.'/tpl').'/');
-define('LOGFILE', realpath(BASEPATH.'log.txt'));
-define('Database', 'sqlite:imhbc.db');
-// You can change the timezone here.
-date_default_timezone_set('Asia/Shanghai');
-define('DATE_FORMAT', 'Y-m-d h:i:s');
 
+// What do you like?
+require_once('config'.EXT);
+// Loading kernel...
 require_once('Charizard'.EXT);
+// Here am I!
 require_once('main'.EXT);
 require_once('writer'.EXT);
-require_once('markdown'.EXT);
 
 $urls = array(
-    '/sess' => 'sess',
     '/' => 'index_handler',
-    '/blog' => 'posts_handler',
-    '/([0-9a-zA-Z\-\.]+)' => 'post_handler',
+    '/blog' => 'blog_handler',
+    '/([0-9a-zA-Z\-\.]+)' => 'main_handler',
+    '/feed.xml' => 'feed_handler',
 
     '/writer/login' => 'login',
+    '/writer/logout' => 'logout',
     '/writer/overview' => 'overview_handler',
     '/writer/settings' => 'settings_handler',
-    '/writer/new' => 'write_handler',
-    '/writer/save' => 'edit_handler',
-    '/writer/edit/index' => 'index_write_handler',
-    '/writer/update/index' => 'index_update_handler',
-    '/writer/edit/([0-9a-zA-Z\-\_]+)' => 'write_handler',
-    '/writer/update/([0-9a-zA-Z\-\_]+)' => 'edit_handler',
-    '/writer/remove/([0-9a-zA-Z\-\_]+)' => 'remove_handler',
-    '/writer' => 'overview_handler'
+    '/writer' => 'overview_handler',
+
+    '/writer/minisite/new' => 'write_minisite_handler',
+    '/writer/minisite/edit/([0-9a-zA-Z\-\_]+)' => 'write_minisite_handler',
+    '/writer/minisite/save' => 'update_minisite_handler',
+    '/writer/minisite/update/([0-9a-zA-Z\-\_]+)' => 'update_minisite_handler',
+    '/writer/minisite/remove/([0-9a-zA-Z\-\_]+)' => 'remove_minisite_handler',
+
+    '/writer/post/new' => 'write_post_handler',
+    '/writer/post/edit/([0-9a-zA-Z\-\_]+)' => 'write_post_handler',
+    '/writer/post/save' => 'update_post_handler',
+    '/writer/post/update/([0-9a-zA-Z\-\_]+)' => 'update_post_handler',
+    '/writer/post/remove/([0-9a-zA-Z\-\_]+)' => 'remove_post_handler',
+
+    '/writer/index/edit' => 'write_index_handler',
+    '/writer/index/update' => 'update_index_handler'
 );
 
 Charizard::run($urls, false);

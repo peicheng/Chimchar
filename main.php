@@ -9,7 +9,7 @@ class index_handler {
         $template_values = array(
             'site_info' => $db->get_site(),
             'post' => $db->get_index(),
-            'page' => $db->get_pages(),
+            'pages' => $db->get_pages(),
             'u' => $url_helper
         );
         $path = 'chimchar';
@@ -24,8 +24,12 @@ class feed_handler {
         $render = Charizard::load('render');
         $url_helper = Charizard::load('url_helper');
 
+        header ("Content-Type:text/xml");  
+        
         $template_values = array(
             'site_info' => $db->get_site(),
+            'site_domain' => Charizard::$base_url,
+            'update' => date(DATE_FORMAT),
             'posts' => $db->get_posts(),
             'u' => $url_helper
         );
@@ -43,7 +47,7 @@ class blog_handler {
 
         $template_values = array(
             'site_info' => $db->get_site(),
-            'posts' => $db->get_posts(),
+            'posts' => $db->get_only_posts(),
             'pages' => $db->get_pages(),
             'u' => $url_helper
         );

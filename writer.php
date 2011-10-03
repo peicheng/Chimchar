@@ -225,11 +225,15 @@ class overview_handler extends auth {
         $db = Charizard::load('db');
         $render = Charizard::load('render');
 
+        $posts = $db->get_posts();
+        $minisites = $db->get_minisites();
+        rsort($posts);
+        rsort($minisites);
         $template_values = array(
             'site_info' => $db->get_site(),
             'u' => Charizard::load('url_helper'),
-            'posts' => $db->get_posts(),
-            'minisites' => $db->get_minisites()
+            'posts' => $posts,
+            'minisites' => $minisites
         );
 
         $path = 'writer';
