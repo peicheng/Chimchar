@@ -1,4 +1,4 @@
-<?php if (! defined('BASEPATH') exit('No direct script access!'));
+<?php if (! defined('BASEPATH')) exit('No direct script access!');
 require_once 'markdown.php';
 
 class mkd_render {

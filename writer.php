@@ -337,9 +337,10 @@ class update_index_handler extends auth {
         $db = Charizard::load('db');
         $status_coder = Charizard::load('status_coder');
         $u = Charizard::load('url_helper');
+        $mkd = Charizard::load('mkd_render');
 
         $p = $_POST;
-        $p['formatted_content'] = Markdown($p['content']);
+        $p['formatted_content'] = $mkd->rende($p['content']);
         $db->set_index($p);
 
         global $message;
@@ -358,10 +359,11 @@ class update_post_handler extends auth {
         $db = Charizard::load('db');
         $status_coder = Charizard::load('status_coder');
         $u = Charizard::load('url_helper');
+        $mkd = Charizard::load('mkd_render');
 
         $p = $_POST;
         $p['id'] = $id;
-        $p['formatted_content'] = Markdown($p['content']);
+        $p['formatted_content'] = $mkd->rende($p['content']);
         $p['modified_time'] = date(DATE_FORMAT);
         if (!$id) {
             $p['modified_time'] = date(DATE_FORMAT);
@@ -388,10 +390,11 @@ class update_minisite_handler extends auth {
         $db = Charizard::load('db');
         $status_coder = Charizard::load('status_coder');
         $u = Charizard::load('url_helper');
+        $mkd = Charizard::load('mkd_render');
 
         $p = $_POST;
         $p['id'] = $id;
-        $p['formatted_content'] = Markdown($p['content']);
+        $p['formatted_content'] = $mkd->rende($p['content']);
         $p['modified_time'] = date(DATE_FORMAT);
         if (!$id) {
             $p['modified_time'] = date(DATE_FORMAT);
