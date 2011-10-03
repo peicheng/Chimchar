@@ -1,0 +1,32 @@
+{% include 'header.html' %}
+<title>{{ post.title }}</title>
+</head>
+<body>
+<div class="wrapper">
+	<div class="sep120"></div>
+    <div class="nav">
+        <ul>
+            <li>
+                <a href="{{ u.build('/blog') }}">blog</a>
+            </li>
+            {% for page in pages %}
+            <li>
+                <a href="{{ u.build(['/', page.url]|join) }}">{{ page.title }}</a>
+            </li>
+            {% endfor %}
+            <li>
+                <a href="{{ u.build('/feed.xml') }}">feed</a>
+            </li>
+        </ul>
+        <h3 class="section_header"></h3>
+    </div>
+    <div class="content">
+        <h2 class="title">{{ post.title }}</h2>
+        {{ post.formatted_content | raw}}
+    </div>
+    <div class="footer">
+        {{ site_info.slogan }}
+    </div>
+</div>
+</body>
+{% include 'footer.html' %}
