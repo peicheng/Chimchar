@@ -96,11 +96,20 @@ class db {
         return R::find('posts', "1 ORDER BY :order DESC LIMIT :limit", $r);
     }
 
+    function get_only_posts($limit = 100000) {
+        $r = array(
+            'order' => 'created_time',
+            'limit' => $limit
+        );
+        return R::find('posts', "is_page = 0 AND is_isolated = 0 ORDER BY :order DESC LIMIT :limit", $r);
+    }
+
     function get_minisites($limit = 100000) {
         $r = array(
             'order' => 'created_time',
             'limit' => $limit
         );
+        return R::find('minisite', "1 ORDER BY :order DESC LIMIT :limit", $r);
     }
 
     function get_pages($limit = 100000) {
@@ -121,7 +130,7 @@ class db {
     // end of reader
 
     // writer
-    function _get_new($type) {
+    function get_new($type) {
         return R::dispense($type);
     }
 
@@ -133,7 +142,7 @@ class db {
 
     function set_index($index) {
         $post = $this->get_index();
-        $post->import($index, 'title, url, content, formatted_content, modified_time, created_time');
+        $post->import($index, 'title, url, content, formatted_content');
     }
 
     function remove_post($id) {
