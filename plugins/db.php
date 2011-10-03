@@ -144,7 +144,7 @@ class db {
     }
 
     function set_index($index) {
-        $post = $this->get_new('index');
+        $post = $this->get_index('index');
         if (!$post) {
             $post = $this->get_new('index');
         }
