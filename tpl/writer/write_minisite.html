@@ -1,0 +1,52 @@
+{% include 'head.html' %}
+        <title>{{ site_info.site_name }} » minisite </title>
+    </head>
+    <body>
+        <div class="container">
+            {% include 'header.html' %}
+            <div class="writer">
+                {% if mode == 'edit' %}
+                <form id="writer" action="{{ u.build(['/writer/minisite/update/', post.id]|join) }}" name="writer" method="POST">
+                {% else %}
+                <form id="writer" action="{{ u.build('/writer/minisite/save') }}" name="writer" method="POST">
+                {% endif %}
+                    <div class="clearfix">
+                        <label for="title">Title</label>
+                        <div class="input">
+                            <input id="title" name="title" type="text" class="span4 title" value="{% if post.title %}{{ post.title }}{% endif %}"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="url">Url</label>
+                        <div class="input">
+                    	    <input id="url" name="url" type="text" class="span4 url" value="{% if post.url %}{{ post.url }}{% endif %}"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="content">Content</label>
+                    	<div class="input">
+                            <textarea id="content" name="content" class="content">{%if post.content %}{{ post.content }}{% endif %}</textarea>
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="tpl">Template</label>
+                    	<div class="input">
+                    		<input id="tpl" name="tpl" type="text" class="tpl span4" value="{% if post.tpl %}{{ post.tpl }}{% endif %}" />
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="style">Style</label>
+                    	<div class="input">
+                    		<input id="style" name="style" type="text" class="style span4" value="{% if post.style %}{{ post.style }}{% endif %}" />
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="input">
+                            <a class="btn info" id="doSubmit" href="javascript:document.writer.submit()">Save</a>&nbsp;&nbsp;{% if mode == 'edit' %}<a class="btn danager" id="doDelete" href="#;" onclick="if (confirm('Are you sure?')) { location.href = '{{ u.build(['/writer/minisite/remove/', post.id]|join) }}';}">Delete</a>{% else %}<a class="btn danger" id="doDiscard" href="{{ u.build('/writer') }}">Discard</a>{% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+{% include 'foot.html' %}

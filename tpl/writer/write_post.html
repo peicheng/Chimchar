@@ -1,0 +1,74 @@
+{% include 'head.html' %}
+        <title>{{ site_info.site_name }} » write </title>
+    </head>
+    <body>
+        <div class="container">
+            {% include 'header.html' %}
+            <div class="writer">
+                {% if mode == 'edit' %}
+                <form id="writer" action="{{ u.build(['/writer/post/update/', post.id]|join) }}" name="writer" method="POST">
+                {% else %}
+                <form id="writer" action="{{ u.build('/writer/post/save') }}" name="writer" method="POST">
+                {% endif %}
+                    <div class="clearfix">
+                        <label for="title">Title</label>
+                        <div class="input">
+                            <input id="title" name="title" type="text" class="span4 title" value="{% if post.title %}{{ post.title }}{% endif %}"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="url">Url</label>
+                        <div class="input">
+                    	    <input id="url" name="url" type="text" class="span4 url" value="{% if post.url %}{{ post.url }}{% endif %}"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="link">Link</label>
+                    	<div class="input">
+                    		<input id="url" name="link" type="text" class="span4 link" value="{% if post.link %}{{ post.link }}{% endif %}"/>
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="content">Content</label>
+                    	<div class="input">
+                            <textarea id="content" name="content" class="content">{%if post.content %}{{ post.content }}{% endif %}</textarea>
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="is_page">Is page</label>
+                    	<div class="input">
+                            <select id="is_page" name="is_page" class="span2">
+                                {% if post.is_page == 1 %}
+                    			<option value="1" selected="selected">Yes</option>
+                                <option value="0">No</option>
+                                {% else %}
+                    			<option value="1">Yes</option>
+                                <option value="0" selected="selected">No</option>
+                                {% endif %}
+                    		</select>
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="is_isolated">Is isolated</label>
+                    	<div class="input">
+                            <select id="is_isolated" name="is_isolated" class="span2">
+                                {% if post.is_isolated == 1 %}
+                    			<option value="1" selected="selected">Yes</option>
+                                <option value="0">No</option>
+                                {% else %}
+                    			<option value="1">Yes</option>
+                                <option value="0" selected="selected">No</option>
+                                {% endif %}
+                    		</select>
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="input">
+                            <a class="btn info" id="doSubmit" href="javascript:document.writer.submit()">Save</a>&nbsp;&nbsp;{% if mode == 'edit' %}<a class="btn danager" id="doDelete" href="#;" onclick="if (confirm('Are you sure?')) { location.href = '{{ u.build(['/writer/post/remove/', post.id]|join) }}';}">Delete</a>{% else %}<a class="btn danger" id="doDiscard" href="{{ u.build('/writer') }}">Discard</a>{% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+{% include 'foot.html' %}

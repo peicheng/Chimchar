@@ -1,0 +1,30 @@
+{% include 'head.html' %}
+        <title>{{ site_info.site_name }} » write index </title>
+    </head>
+    <body>
+        <div class="container">
+            {% include 'header.html' %}
+            <div class="writer">
+                <form id="writer" action="{{ u.build('/writer/index/update/') }}" name="writer" method="POST">
+                    <div class="clearfix">
+                        <label for="title">Title</label>
+                        <div class="input">
+                            <input id="title" name="title" type="text" class="span4 title" value="{% if post.title %}{{ post.title }}{% endif %}"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                    	<label for="content">Content</label>
+                    	<div class="input">
+                            <textarea id="content" name="content" class="content">{%if post.content %}{{ post.content }}{% endif %}</textarea>
+                    	</div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="input">
+                            <a class="btn info" id="doSubmit" href="javascript:document.writer.submit()">Save</a>&nbsp;&nbsp;{% if mode == 'edit' %}<a class="btn danager" id="doDelete" href="#;" onclick="if (confirm('Are you sure?')) { location.href = '{{ u.build(['/writer/post/remove/', post.id]|join) }}';}">Delete</a>{% else %}<a class="btn danger" id="doDiscard" href="{{ u.build('/writer') }}">Discard</a>{% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+{% include 'foot.html' %}
