@@ -26,7 +26,9 @@
             <div class="header">
                 <h1>{{ post.title }}</h1>
                 <div class="content">
-                    {{ post.formatted_content | raw }}
+                    {% autoescape false %}
+                    {{ post.formatted_content}}
+                    {% endautoescape %}
                 </div>
             </div>
             <div class="footer">

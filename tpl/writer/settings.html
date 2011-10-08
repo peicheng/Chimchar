@@ -31,6 +31,12 @@
                     	</div>
                     </div>
                     <div class="clearfix">
+                    	<label for="style">Style</label>
+                        <div class="input">
+                            <input id="style" name="posts_style" type="text" class="style span4" value="{% if site_info.posts_style %}{{ site_info.posts_style }}{% endif %}" />
+                        </div>
+                    </div>
+                    <div class="clearfix">
                         <div class="input">
                             <a class="btn info" id="doSubmit" href="javascript:document.writer.submit()">Save</a>&nbsp;&nbsp;{% if mode == 'edit' %}<a class="btn danager" id="doDelete" href="#;" onclick="if (confirm('Are you sure?')) { location.href = '{{ u.build(['/writer/post/remove/', post.id]|join) }}';}">Delete</a>{% else %}<a class="btn danger" id="doDiscard" href="{{ u.build('/writer') }}">Discard</a>{% endif %}
                         </div>

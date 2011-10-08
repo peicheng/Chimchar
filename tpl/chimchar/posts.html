@@ -28,7 +28,9 @@
         {% else %}
         <h2 class="title">{{ post.title }}</h2>
         {% endif %}
-        {{ post.formatted_content | raw }}
+        {% autoescape false %}
+        {{ post.formatted_content}}
+        {% endautoescape %}
         <a href="{{ u.build(['/', post.url]|join) }}" class="permalink">permalink</a>
         <p class="created_time">{{ post.created_time }}  • </p> 
     </div>

@@ -24,8 +24,10 @@
                     </div>
                     <div class="clearfix">
                     	<label for="content">Content</label>
-                    	<div class="input">
+                        <div class="input">
+                            {% autoescape false %}
                             <textarea id="content" name="content" class="content">{%if post.content %}{{ post.content }}{% endif %}</textarea>
+                            {% endautoescape %}
                     	</div>
                     </div>
                     <div class="clearfix">

@@ -24,8 +24,10 @@
 		<name>{{ site_info.author }}</name>
 		<uri>{{ site_domain }}</uri>
 	</author>
-	<content type="html" xml:base="{{ site_domain }}" xml:lang="en"><![CDATA[
-    {{ post.formatted_content }}  
+    <content type="html" xml:base="{{ site_domain }}" xml:lang="en"><![CDATA[
+    {% autoescape false %}
+    {{ post.formatted_content }}
+    {% endautoescape %}
   ]]></content>
 </entry>
 {% endfor %}

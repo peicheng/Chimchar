@@ -22,7 +22,9 @@
     </div>
     <div class="content">
         <h2 class="title">{{ post.title }}</h2>
-        {{ post.formatted_content | raw}}
+        {% autoescape false %}
+        {{ post.formatted_content }}
+        {% endautoescape %}
     </div>
     <div class="footer">
         {{ site_info.slogan }}
