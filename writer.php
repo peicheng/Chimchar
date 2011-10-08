@@ -50,29 +50,11 @@ class auth {
         return $this->session->userdata['is_pass'];
     }
 
-    function back_auth() {
+    function back_auth($message = false) {
         $u = Charizard::load('url_helper');
-        $this->status->redirect($u->build('/writer/login'));
+        $this->status->redirect($u->build('/writer/login', $message));
     }
 }
-
-/*
- * TODO
- * Need a postman?
- *
- * message => {
- *      'error': String,
- *      'warning': String,
- *      'success': String
- * }
- *
- * 
- * */
-$message = array(
-    'error' => false,
-    'warning' => false,
-    'success' => false
-);
 
 class login extends auth {
     function GET() {
@@ -81,11 +63,9 @@ class login extends auth {
             $this->status->redirect($u->build('/writer/overview'));
         }
 
-        global $message;
         $render = Charizard::load('render');
         $template_values = array(
             'title' => 'login',
-            'message' => $message,
             'u' => Charizard::load('url_helper')
         );
 
@@ -98,13 +78,12 @@ class login extends auth {
             $u = Charizard::load('url_helper');
             $this->status->seeother($u->build('/writer/overview'));
         } else {
-            global $message;
             $message = array(
-                'error' => 'Secret parse wrong!',
-                'warning' => false,
-                'success' => false
+                'message' => 'Secret parse wrong!',
+                'message' => false,
+                'message' => false
             );
-            $this->back_auth();
+            $this->back_auth($message);
         }
     }
 }
@@ -113,36 +92,28 @@ class logout extends auth {
     public $message = false;
 
     function GET() {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
         } else {
             $this->kill();
             $message = array(
-                'error' => false,
-                'warning' => false,
-                'success' => 'Bye my friend =)'
+                'message' => 'Bye my friend =)'
             );
-            $this->back_auth();
+            $this->back_auth($message);
         }
     }
 }
 
 class remove_post_handler extends auth {
     function GET($id) {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -151,19 +122,15 @@ class remove_post_handler extends auth {
         if ($post) {
             $db->remove_post($id);
             $message = array(
-                'success' => "post $id remove.",
-                'warning' => false,
-                'error' => false
+                'message' => "post $id remove.",
             );
         } else {
             $message = array(
-                'success' => false,
-                'warning' => "post $id not found!",
-                'error' => false
+                'message' => "post $id not found!",
             );
         }
         $u = Charizard::load('url_helper');
-        $this->status->redirect($u->build('/writer/overview'));
+        $this->status->redirect($u->build('/writer/overview', $message));
     }
 
     function POST($id) {
@@ -173,14 +140,11 @@ class remove_post_handler extends auth {
 
 class remove_minisite_handler extends auth {
     function GET($id) {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -189,19 +153,15 @@ class remove_minisite_handler extends auth {
         if ($post) {
             $db->remove_minisite($id);
             $message = array(
-                'success' => "minisite $id remove.",
-                'warning' => false,
-                'error' => false
+                'message' => "minisite $id remove.",
             );
         } else {
             $message = array(
-                'success' => false,
-                'warning' => "minisite $id not found!",
-                'error' => false
+                'message' => "minisite $id not found!",
             );
         }
         $u = Charizard::load('url_helper');
-        $this->status->redirect($u->build('/writer/overview'));
+        $this->status->redirect($u->build('/writer/overview', $message));
     }
 
     function POST($id) {
@@ -211,14 +171,11 @@ class remove_minisite_handler extends auth {
 
 class overview_handler extends auth {
     function GET() {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -243,14 +200,11 @@ class overview_handler extends auth {
 
 class write_post_handler extends auth {
     function GET($id = false) {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -277,14 +231,11 @@ class write_post_handler extends auth {
 
 class write_minisite_handler extends auth {
     function GET($id = false) {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -310,14 +261,11 @@ class write_minisite_handler extends auth {
 }
 class write_index_handler extends auth {
     function GET() {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -347,11 +295,8 @@ class update_index_handler extends auth {
         $p['formatted_content'] = $mkd->rende($p['content']);
         $db->set_index($p);
 
-        global $message;
         $message = array(
-            'success' => 'Your post saved',
-            'warning' => false,
-            'error' => false
+            'message' => 'Your post saved',
         );
 
         $status_coder->_301($u->build('/writer/overview'));
@@ -374,14 +319,11 @@ class update_post_handler extends auth {
         }
         $db->set_post($p);
 
-        global $message;
         $message = array(
-            'success' => 'Your post saved',
-            'warning' => false,
-            'error' => false
+            'message' => 'Your post saved',
         );
 
-        $status_coder->_301($u->build('/writer/overview'));
+        $status_coder->_301($u->build('/writer/overview', $message));
     }
 }
 
@@ -401,27 +343,21 @@ class update_minisite_handler extends auth {
         }
         $db->set_minisite($p);
 
-        global $message;
         $message = array(
-            'success' => 'Your minisite saved',
-            'warning' => false,
-            'error' => false
+            'message' => 'Your minisite saved',
         );
 
-        $status_coder->_301($u->build('/writer/overview'));
+        $status_coder->_301($u->build('/writer/overview', $message));
     }
 }
 
 class settings_handler extends auth {
     function GET() {
-        global $message;
         if (!$this->is_pass()) {
             $message = array(
-                'error' => 'login first',
-                'warning' => false,
-                'success' => false
+                'message' => 'login first',
             );
-            $this->back_auth();
+            $this->back_auth($message);
             return;
         }
 
@@ -445,14 +381,11 @@ class settings_handler extends auth {
         $s = $_POST;
         $db->set_site($s);
 
-        global $message;
         $message = array(
-            'success' => 'Your settings saved',
-            'warning' => false,
-            'error' => false
+            'message' => 'Your settings saved',
         );
 
-        $status_coder->_301($u->build('/writer/overview'));
+        $status_coder->_301($u->build('/writer/overview', $message));
     }
 }
 ?>

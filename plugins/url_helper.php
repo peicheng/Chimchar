@@ -9,16 +9,17 @@ class url_helper {
         }
     }
 
-    function build($child, $parent = false) {
+    function build($child, $query = false, $parent = false) {
         if (!$parent) {
             $parent = Charizard::$current;
         }
         $base = Charizard::$base_url;
+        $result = '';
 
         if (strpos($child, '/') === 0) {
             // root level
             $uri = ltrim($child, '/');
-            return trim($base, '/') . '/' . $uri;
+            $result = trim($base, '/') . '/' . $uri;
         } else if (strpos($child, '../') === 0) {
             // up a level
             // TODO too many ../ will cause invaild url
@@ -51,12 +52,25 @@ class url_helper {
                     break;
                 }
             }
-            return $p . '/' . $uri;
+            $result = $p . '/' . $uri;
         } else {
             // add to the tail
             $uri = ltrim($child, '/');
-            return trim($parent, '/') . '/' . $uri;
+            $result = trim($parent, '/') . '/' . $uri;
         }
+
+        // add query to the tail
+        if (is_array($query)) {
+            $result .= '?';
+            foreach ($query as $key => $value) {
+                if ($value) {
+                    $result .= "$key=$value" . '&';
+                }
+            }
+            $result = substr($result, 0, -1);
+        }
+
+        return $result;
     }
 }
 ?>
