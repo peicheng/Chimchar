@@ -14,6 +14,7 @@ R::debug(false);
  *      author: String
  *      site_slogan: String
  *      google_analytic_id: String
+ *      posts_style: String
  *
  * Table posts:
  *      id: Integer
@@ -33,8 +34,8 @@ R::debug(false);
  *      url: String
  *      content: String
  *      formatted_content: String
- *      tpl: String
  *      style: String
+ *      tpl: String
  *      created_time: String
  *      modified_time: String
  *
@@ -44,6 +45,7 @@ R::debug(false);
  *      url: String
  *      content: String
  *      formatted_content: String
+ *      style: String
  *      created_time: String
  *      modified_time: String
  * */
@@ -139,7 +141,7 @@ class db {
         if (!$site) {
             $site = $this->get_new('site_setting');
         }
-        $site->import($settings, 'site_name, site_slogan, author, google_analytic_id');
+        $site->import($settings, 'site_name, site_slogan, author, google_analytic_id, posts_style');
         R::store($site);
     }
 
@@ -148,7 +150,7 @@ class db {
         if (!$post) {
             $post = $this->get_new('index');
         }
-        $post->import($index, 'title, url, content, formatted_content');
+        $post->import($index, 'title, url, content, formatted_content, style');
 
         R::store($post);
     }
@@ -181,11 +183,11 @@ class db {
         if (!$p['id']) {
             // new
             $post = R::dispense('minisite');
-            $post->import($p, 'title, url, content, formatted_content, modified_time, created_time, tpl, style');
+            $post->import($p, 'title, url, content, formatted_content, modified_time, created_time, style, tpl');
         } else {
             // update
             $post = $this->get_minisite_by_id($p['id']);
-            $post->import($p, 'title, url, content, formatted_content, modified_time, tpl, style');
+            $post->import($p, 'title, url, content, formatted_content, modified_time, style, tpl');
         }
         $id = R::store($post);
         return $id;

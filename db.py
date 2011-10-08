@@ -38,6 +38,7 @@ class minisite(Base):
     content = Column(String)
     formatted_content = Column(String)
     style = Column(String)
+    tpl = Column(String)
     created_time = Column(String)
     modified_time = Column(String)
 

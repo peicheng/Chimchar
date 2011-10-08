@@ -2,7 +2,7 @@
 <html lang="zh-CN">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="{{ u.build('/static/themes/style.css') }}" />
+        <link rel="stylesheet" href="{{ u.build(['/static/themes/', style, '/style.css']|join) }}" />
         <link rel="alternate" type="application/atom+xml" href="{{ u.build('/feed.xml') }}" />
         <link rel="shortcut icon" href="{{ u.build('/static/shared/favicon.ico') }}" />
         <script type="text/javascript" src="{{ u.build('/static/shared/ext/jquery-1.6.1.min.js') }}"></script>

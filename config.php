@@ -17,4 +17,7 @@ define('Database', 'sqlite:chimchar.db');
 // You can change the timezone here.
 date_default_timezone_set('Asia/Shanghai');
 define('DATE_FORMAT', 'Y-m-d h:i:s');
+
+// Default style
+define('DEFAULT_STYLE', 'chimchar');
 ?>

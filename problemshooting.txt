@@ -1,0 +1,4 @@
+* writeonly database
+
+    chmod 776 your_data_base_file.db
+    chmod 777 .
