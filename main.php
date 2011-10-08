@@ -56,10 +56,10 @@ class blog_handler {
         $site_info = $db->get_site();
         $pages = $db->get_pages();
         $posts = $db->get_only_posts();
-        if (!$site_info['style']) {
-            $path = $site_info['style'] = DEFAULT_STYLE;
+        if (!$site_info['posts_style']) {
+            $path = $site_info['posts_style'] = DEFAULT_STYLE;
         } else {
-            $path = $site_info['style'];
+            $path = $site_info['posts_style'];
         }
 
         $template_values = array(
@@ -98,10 +98,10 @@ class main_handler {
             }
         } else {
             $post = $db->get_post_by_url($url);
-            if (!$site_info['style']) {
-                $path = $site_info['style'] = DEFAULT_STYLE;
+            if (!$site_info['posts_style']) {
+                $path = $site_info['posts_style'] = DEFAULT_STYLE;
             } else {
-                $path = $site_info['style'];
+                $path = $site_info['posts_style'];
             }
             $tpl = 'post.html';
         }
