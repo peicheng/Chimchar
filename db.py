@@ -15,6 +15,7 @@ class site_setting(Base):
     author = Column(String)
     site_slogan = Column(String)
     google_analytic_id = Column(String)
+    posts_style = Column(String)
 
 class posts(Base):
     __tablename__ = 'posts'
@@ -36,7 +37,6 @@ class minisite(Base):
     url = Column(String)
     content = Column(String)
     formatted_content = Column(String)
-    tpl = Column(String)
     style = Column(String)
     created_time = Column(String)
     modified_time = Column(String)
@@ -48,6 +48,7 @@ class index(Base):
     url = Column(String)
     content = Column(String)
     formatted_content = Column(String)
+    style = Column(String)
     created_time = Column(String)
     modified_time = Column(String)
 
